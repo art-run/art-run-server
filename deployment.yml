@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: art-run
+  name: art-run-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: art-run
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: art-run
+    spec:
+      containers:
+        - image: gcr.io/PROJECT_ID/IMAGE:TAG
+          name: art-run
+          ports:
+            - containerPort: 8080
