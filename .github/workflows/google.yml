@@ -19,10 +19,11 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
+  GAR_LOCATION: asia-northeast3
   GKE_CLUSTER: art-run-k8s-cluster
   GKE_ZONE: asia-northeast3-a	
-  DEPLOYMENT_NAME: dev-deploy
-  IMAGE: art-run-server
+  DEPLOYMENT_NAME: art-run-deployment
+  IMAGE: art-run
 
 permissions:
     contents: 'read'
@@ -38,10 +39,14 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-      # Configure Docker to use the gcloud command-line tool as a credential
-      # helper for authentication
-    - run: |-
-        gcloud --quiet auth configure-docker
+    # Configure Workload Identity Federation and generate an access token.
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v0.4.0'
+      with:
+        token_format: 'access_token'
+        workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
+        service_account: 'my-service-account@my-project.iam.gserviceaccount.com'
 
     - name: Docker configuration
       run: |-
@@ -52,7 +57,6 @@ jobs:
       with:
         cluster_name: ${{ env.GKE_CLUSTER }}
         location: ${{ env.GKE_ZONE }}
-        credentials: ${{ secrets.GKE_SA_KEY }}
 
     # Build the Docker image
     - name: Build
