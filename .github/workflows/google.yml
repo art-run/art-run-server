@@ -19,11 +19,9 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
-  GAR_LOCATION: asia-northeast3
   GKE_CLUSTER: art-run-k8s-cluster
   GKE_ZONE: asia-northeast3-a	
   DEPLOYMENT_NAME: dev-deploy
-  REPOSITORY: zwan2/art-run-server
   IMAGE: art-run-server
 
 permissions:
