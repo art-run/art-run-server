@@ -19,12 +19,10 @@ on:
 
 env:
   PROJECT_ID: ${{ secrets.GKE_PROJECT }}
-  GAR_LOCATION: asia-northeast3	 # TODO: update region of the Artifact Registry
-  GKE_CLUSTER: art-run-k8s-cluster    # TODO: update to cluster name
-  GKE_ZONE: asia-northeast3-a   # TODO: update to cluster zone
-  DEPLOYMENT_NAME: art-run-deployment # TODO: update to deployment name
-  REPOSITORY: zwan2/art-run-server # TODO: update to Artifact Registry docker repository
-  IMAGE: static-site
+  GKE_CLUSTER: art-run-k8s-cluster
+  GKE_ZONE: asia-northeast3-a	
+  DEPLOYMENT_NAME: dev-deploy
+  IMAGE: art-run-server
 
 permissions:
     contents: 'read'
@@ -40,14 +38,10 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    # Configure Workload Identity Federation and generate an access token.
-    - id: 'auth'
-      name: 'Authenticate to Google Cloud'
-      uses: 'google-github-actions/auth@v0.4.0'
-      with:
-        token_format: 'access_token'
-        workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
-        service_account: 'my-service-account@my-project.iam.gserviceaccount.com'
+      # Configure Docker to use the gcloud command-line tool as a credential
+      # helper for authentication
+    - run: |-
+        gcloud --quiet auth configure-docker
 
     - name: Docker configuration
       run: |-
@@ -58,6 +52,7 @@ jobs:
       with:
         cluster_name: ${{ env.GKE_CLUSTER }}
         location: ${{ env.GKE_ZONE }}
+        credentials: ${{ secrets.GKE_SA_KEY }}
 
     # Build the Docker image
     - name: Build
