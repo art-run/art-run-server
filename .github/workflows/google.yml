@@ -57,8 +57,8 @@ jobs:
           ${{ runner.os }}-gradle-
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    - name: Build with Gradle test
-      run: ./gradlew test
+#     - name: Build with Gradle test
+#       run: ./gradlew test
     - name: Build with Gradle
       run: ./gradlew build
 
