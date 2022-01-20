@@ -21,7 +21,7 @@ spec:
         app: art-run
     spec:
       containers:
-        - image: gcr.io/art-run/art-run
+        - image: gcr.io/PROJECT_ID/IMAGE:TAG
           name: art-run
           ports:
             - containerPort: 8080
