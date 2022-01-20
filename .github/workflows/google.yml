@@ -23,6 +23,7 @@ env:
   GKE_CLUSTER: art-run-k8s-cluster
   GKE_ZONE: asia-northeast3-a	
   DEPLOYMENT_NAME: art-run-deployment
+  REPOSITORY: art-run
   IMAGE: art-run
 
 permissions:
