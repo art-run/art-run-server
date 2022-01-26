@@ -29,5 +29,10 @@ spec:
                 configMapKeyRef:
                   name: art-run-configmap
                   key: SPRING_PROFILES_ACTIVE
+            - name: ENCRYPT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: art-run-encrypt-key # from secret
+                  key: ENCRYPT_KEY
           ports:
             - containerPort: 8080
