@@ -25,3 +25,6 @@ spring:
     url: ENC(IpphGXHRcpR9rUwZmiXXlhRUX6fph7rRooeoFDVfNOzViT21pi8LCZJxn+kr6U0t)
     username: root
     password: ENC(jMriZ0Fdkcyq6wVQj5Zn4f9SHmpAwyNcb3gDCOWSaN4=)
+  jpa:
+    hibernate:
+      ddl-auto: create

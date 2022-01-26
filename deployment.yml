@@ -23,5 +23,11 @@ spec:
       containers:
         - image: gcr.io/PROJECT_ID/REPOSITORY/IMAGE:TAG
           name: art-run
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              valueFrom:
+                configMapKeyRef:
+                  name: art-run-configmap
+                  key: SPRING_PROFILES_ACTIVE
           ports:
             - containerPort: 8080
