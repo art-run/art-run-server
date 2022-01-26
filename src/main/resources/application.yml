@@ -1,0 +1,30 @@
+spring:
+  profiles:
+    default: local
+jwt:
+  secret: ENC(NMHO5QOhkLEeeSWD5CV+c4LuMCCP0L4rvnWw5/WjguZtEqPPSY5LKl0PXVfoIFOdobzZQojUHM0zWKlHDyoRaiM5KvYfjsqUFxRv7nc5fXFkOMdaoAESOd6CzLhcjEfm5l6BrS8/1qk=)
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/art-run?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  datasource:
+    url: ENC(IpphGXHRcpR9rUwZmiXXlhRUX6fph7rRooeoFDVfNOzViT21pi8LCZJxn+kr6U0t)
+    username: root
+    password: ENC(jMriZ0Fdkcyq6wVQj5Zn4f9SHmpAwyNcb3gDCOWSaN4=)
+  jpa:
+    hibernate:
+      ddl-auto: create
