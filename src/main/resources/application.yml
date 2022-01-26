@@ -22,7 +22,8 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    url: 10.50.224.3 # Private IP
+
+    url: jdbc:mysql://10.50.224.3:3306/art-run  # Private IP
     username: root
     password: ENC(jMriZ0Fdkcyq6wVQj5Zn4f9SHmpAwyNcb3gDCOWSaN4=)
   jpa:
