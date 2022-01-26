@@ -14,18 +14,17 @@ spring:
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    hibernate:
-      ddl-auto: update
+    properties:
+      hibernate.hbm2ddl.auto: update
 ---
 spring:
   config:
     activate:
       on-profile: dev
   datasource:
-
     url: jdbc:mysql://10.50.224.3:3306/art-run  # Private IP
     username: root
     password: ENC(jMriZ0Fdkcyq6wVQj5Zn4f9SHmpAwyNcb3gDCOWSaN4=)
   jpa:
-    hibernate:
-      ddl-auto: create
+    properties:
+      hibernate.hbm2ddl.auto: update
