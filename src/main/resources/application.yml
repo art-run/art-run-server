@@ -2,7 +2,7 @@ spring:
   profiles:
     default: local
 jwt:
-  secret: ENC(91WNEVJuwclpRke7p48E1UQ/uCDzSSGZHVkpEw37DtNHqPWVu3GNQEPvJfY2khmBfJes6NZTLRqYqHJqyLz1ix9w3/lSp8v+0Xo7usKsh2cqEZLRfT2oq7xHUjhqW7dlFW7bYOIX0qwQBInYpNz0bg/4KCXE7rzuOQyIkUdJt/68rIOxIVW/BzO1d2RNT0JbEn5sCveZnJ9wHldPeJvpHu8xsq8uQOiZ)
+  secret: ENC(NMHO5QOhkLEeeSWD5CV+c4LuMCCP0L4rvnWw5/WjguZtEqPPSY5LKl0PXVfoIFOdobzZQojUHM0zWKlHDyoRaiM5KvYfjsqUFxRv7nc5fXFkOMdaoAESOd6CzLhcjEfm5l6BrS8/1qk=)
 ---
 spring:
   config:
@@ -13,6 +13,9 @@ spring:
     username: root
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
 ---
 spring:
   config:
