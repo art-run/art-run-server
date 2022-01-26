@@ -22,7 +22,7 @@ spring:
     activate:
       on-profile: dev
   datasource:
-    url: ENC(IpphGXHRcpR9rUwZmiXXlhRUX6fph7rRooeoFDVfNOzViT21pi8LCZJxn+kr6U0t)
+    url: 10.50.224.3 # Private IP
     username: root
     password: ENC(jMriZ0Fdkcyq6wVQj5Zn4f9SHmpAwyNcb3gDCOWSaN4=)
   jpa:
