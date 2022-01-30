@@ -1,6 +1,9 @@
 spring:
   profiles:
     default: local
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
 jwt:
   secret: ENC(NMHO5QOhkLEeeSWD5CV+c4LuMCCP0L4rvnWw5/WjguZtEqPPSY5LKl0PXVfoIFOdobzZQojUHM0zWKlHDyoRaiM5KvYfjsqUFxRv7nc5fXFkOMdaoAESOd6CzLhcjEfm5l6BrS8/1qk=)
 ---
