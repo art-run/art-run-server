@@ -47,4 +47,34 @@ class RouteRunServiceTest {
         assertThat(savedRoute.getTargetRoute().equals(targetRoute));
         assertThat(savedRoute.getMember().getNickname().equals(member.getNickname()));
     }
+
+    @Test
+    void finish() throws ParseException {
+        //given
+        LineString targetRoute = (LineString) wktToGeometry.wktToGeometry("LINESTRING (30 10, 10 30, 40 40)");
+        LineString runRoute = (LineString) wktToGeometry.wktToGeometry("LINESTRING (29 11, 11 31, 42 41)");
+        String title = "달리기 성공!";
+
+        Route route = Route.builder()
+                .id(1L)
+                .member(member)
+                .targetRoute(targetRoute)
+                .runRoute(runRoute)
+                .title(title)
+                .distance(1235)
+                .time(295)
+                .kcal(64)
+                .color("B00020")
+                .thickness((byte) 3)
+                .isPublic(Boolean.TRUE)
+                .build();
+        given(routeRepository.save(any())).willReturn(route);
+
+        //when
+        Route savedRoute = routeRunService.finish(route);
+
+        //then
+        assertThat(savedRoute.getRunRoute().equals(runRoute));
+        assertThat(savedRoute.getTitle().equals(title));
+    }
 }
