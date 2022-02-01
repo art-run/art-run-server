@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Type;
+import org.locationtech.jts.geom.LineString;
 
 import javax.persistence.*;
 
@@ -22,9 +24,11 @@ public class Route extends BaseEntity {
     @Column(name = "route_id")
     private Long id;
 
-    private String targetRoute;
+    @Type(type = "org.hibernate.spatial.JTSGeometryType")
+    private LineString targetRoute;
 
-    private String runRoute;
+    @Type(type = "org.hibernate.spatial.JTSGeometryType")
+    private LineString runRoute;
 
     private String title;
 
