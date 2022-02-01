@@ -32,17 +32,17 @@ public class Route extends BaseEntity {
 
     private String title;
 
-    private int distance;
+    private int distance; // 미터(m)
 
-    private int time;
+    private int time; // 초(sec)
 
-    private Short kcal;
+    private int kcal;
 
-    private String color;
+    private String color; // Hex
 
     private Byte thickness;
 
-    private Byte isPublic;
+    private Boolean isPublic;
 
     @ManyToOne
     @JoinColumn(name = "member_id")

@@ -16,4 +16,8 @@ public class RouteRunService {
     public Route start(Route route) {
         return routeRepository.save(route);
     }
+
+    public Route finish(Route route) {
+        return routeRepository.save(route);
+    }
 }
