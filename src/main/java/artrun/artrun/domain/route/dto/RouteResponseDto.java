@@ -4,15 +4,14 @@ import artrun.artrun.domain.route.domain.Route;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.locationtech.jts.geom.LineString;
 
 @Getter
 @Setter
 @AllArgsConstructor
 public class RouteResponseDto {
-    private LineString targetRoute;
+    private String targetRoute;
 
     public static RouteResponseDto of(Route route) {
-        return new RouteResponseDto(route.getTargetRoute());
+        return new RouteResponseDto(route.getTargetRoute().toString());
     }
 }

@@ -5,14 +5,13 @@ import artrun.artrun.domain.route.domain.Route;
 import artrun.artrun.global.util.wktToGeometry;
 import lombok.Getter;
 import lombok.Setter;
-import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.io.ParseException;
 
 @Getter
 @Setter
 public class RouteStartRequestDto {
     private Long memberId;
-    private String targetRoute;
+    private String wktTargetRoute;
 
     public Route toRoute() throws ParseException {
         Member member = Member.builder()
@@ -20,7 +19,7 @@ public class RouteStartRequestDto {
                 .build();
         return Route.builder()
                 .member(member)
-                .targetRoute((LineString) wktToGeometry.wktToGeometry(targetRoute))
+                .targetRoute(wktToGeometry.wktToGeometry(wktTargetRoute))
                 .build();
     }
 }
