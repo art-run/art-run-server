@@ -2,6 +2,8 @@ package artrun.artrun.domain.route.service;
 
 import artrun.artrun.domain.member.domain.Member;
 import artrun.artrun.domain.route.domain.Route;
+import artrun.artrun.domain.route.dto.RouteStartResponseDto;
+import artrun.artrun.domain.route.dto.RouteStartRequestDto;
 import artrun.artrun.domain.route.repository.RouteRepository;
 import artrun.artrun.global.util.wktToGeometry;
 import org.junit.jupiter.api.Test;
@@ -39,11 +41,17 @@ class RouteRunServiceTest {
                 .targetRoute(targetRoute)
                 .build();
         given(routeRepository.save(any())).willReturn(route);
+        given(routeRepository.getById(any())).willReturn(route);
+
+        RouteStartRequestDto routeStartRequestDto = new RouteStartRequestDto();
+        routeStartRequestDto.setMemberId(member.getId());
+        routeStartRequestDto.setTargetRoute(String.valueOf(targetRoute));
 
         // when
-        Route savedRoute = routeRunService.start(route);
+        RouteStartResponseDto routeResponseDto = routeRunService.start(routeStartRequestDto);
 
         // then
+        Route savedRoute = routeRepository.getById(routeResponseDto.getRouteId());
         assertThat(savedRoute.getTargetRoute().equals(targetRoute));
         assertThat(savedRoute.getMember().getNickname().equals(member.getNickname()));
     }

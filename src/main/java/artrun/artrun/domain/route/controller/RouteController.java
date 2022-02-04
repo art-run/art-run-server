@@ -1,9 +1,31 @@
 package artrun.artrun.domain.route.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import artrun.artrun.domain.route.dto.RouteResponseDto;
+import artrun.artrun.domain.route.dto.RouteStartResponseDto;
+import artrun.artrun.domain.route.dto.RouteStartRequestDto;
+import artrun.artrun.domain.route.service.RouteFindService;
+import artrun.artrun.domain.route.service.RouteRunService;
+import lombok.AllArgsConstructor;
+import org.locationtech.jts.io.ParseException;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/route")
+@AllArgsConstructor
 public class RouteController {
+
+    private final RouteRunService routeRunService;
+
+    private final RouteFindService routeFindService;
+
+    @PostMapping("/start")
+    public ResponseEntity<RouteStartResponseDto> start(@RequestBody RouteStartRequestDto routeStartRequestDto) throws ParseException {
+        return ResponseEntity.ok(routeRunService.start(routeStartRequestDto));
+    }
+
+    @GetMapping("/{routeId}")
+    public ResponseEntity<RouteResponseDto> get(@PathVariable Long routeId) {
+        return ResponseEntity.ok(RouteResponseDto.of(routeFindService.get(routeId)));
+    }
 }

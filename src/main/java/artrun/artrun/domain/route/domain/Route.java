@@ -24,10 +24,8 @@ public class Route extends BaseEntity {
     @Column(name = "route_id")
     private Long id;
 
-    @Type(type = "org.hibernate.spatial.JTSGeometryType")
     private LineString targetRoute;
 
-    @Type(type = "org.hibernate.spatial.JTSGeometryType")
     private LineString runRoute;
 
     private String title;
