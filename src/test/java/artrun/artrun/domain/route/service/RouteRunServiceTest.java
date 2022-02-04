@@ -2,6 +2,8 @@ package artrun.artrun.domain.route.service;
 
 import artrun.artrun.domain.member.domain.Member;
 import artrun.artrun.domain.route.domain.Route;
+import artrun.artrun.domain.route.dto.RouteFinishRequestDto;
+import artrun.artrun.domain.route.dto.RouteFinishResponseDto;
 import artrun.artrun.domain.route.dto.RouteStartResponseDto;
 import artrun.artrun.domain.route.dto.RouteStartRequestDto;
 import artrun.artrun.domain.route.repository.RouteRepository;
@@ -45,7 +47,7 @@ class RouteRunServiceTest {
 
         RouteStartRequestDto routeStartRequestDto = new RouteStartRequestDto();
         routeStartRequestDto.setMemberId(member.getId());
-        routeStartRequestDto.setTargetRoute(String.valueOf(targetRoute));
+        routeStartRequestDto.setWktTargetRoute(String.valueOf(targetRoute));
 
         // when
         RouteStartResponseDto routeResponseDto = routeRunService.start(routeStartRequestDto);
@@ -59,15 +61,12 @@ class RouteRunServiceTest {
     @Test
     void finish() throws ParseException {
         //given
-        LineString targetRoute = (LineString) wktToGeometry.wktToGeometry("LINESTRING (30 10, 10 30, 40 40)");
-        LineString runRoute = (LineString) wktToGeometry.wktToGeometry("LINESTRING (29 11, 11 31, 42 41)");
+        String wktRunRoute = "LINESTRING (29 11, 11 31, 42 41)";
         String title = "달리기 성공!";
 
-        Route route = Route.builder()
-                .id(1L)
-                .member(member)
-                .targetRoute(targetRoute)
-                .runRoute(runRoute)
+        RouteFinishRequestDto routeFinishRequestDto = RouteFinishRequestDto.builder()
+                .routeId(1L)
+                .wktRunRoute(wktRunRoute)
                 .title(title)
                 .distance(1235)
                 .time(295)
@@ -76,13 +75,16 @@ class RouteRunServiceTest {
                 .thickness((byte) 3)
                 .isPublic(Boolean.TRUE)
                 .build();
-        given(routeRepository.save(any())).willReturn(route);
 
+        Route route = routeFinishRequestDto.toRoute();
+        given(routeRepository.save(any())).willReturn(route);
+        given(routeRepository.getById(any())).willReturn(route);
         //when
-        Route savedRoute = routeRunService.finish(route);
+        RouteFinishResponseDto routeFinishResponseDto = routeRunService.finish(routeFinishRequestDto);
 
         //then
-        assertThat(savedRoute.getRunRoute().equals(runRoute));
+        Route savedRoute = routeRepository.getById(routeFinishResponseDto.getRouteId());
+        assertThat(savedRoute.getRunRoute().toString().equals(wktRunRoute));
         assertThat(savedRoute.getTitle().equals(title));
     }
 }

@@ -1,8 +1,6 @@
 package artrun.artrun.domain.route.controller;
 
-import artrun.artrun.domain.route.dto.RouteResponseDto;
-import artrun.artrun.domain.route.dto.RouteStartResponseDto;
-import artrun.artrun.domain.route.dto.RouteStartRequestDto;
+import artrun.artrun.domain.route.dto.*;
 import artrun.artrun.domain.route.service.RouteFindService;
 import artrun.artrun.domain.route.service.RouteRunService;
 import lombok.AllArgsConstructor;
@@ -19,13 +17,18 @@ public class RouteController {
 
     private final RouteFindService routeFindService;
 
+    @GetMapping("/{routeId}")
+    public ResponseEntity<RouteResponseDto> get(@PathVariable Long routeId) {
+        return ResponseEntity.ok(RouteResponseDto.of(routeFindService.get(routeId)));
+    }
+
     @PostMapping("/start")
     public ResponseEntity<RouteStartResponseDto> start(@RequestBody RouteStartRequestDto routeStartRequestDto) throws ParseException {
         return ResponseEntity.ok(routeRunService.start(routeStartRequestDto));
     }
 
-    @GetMapping("/{routeId}")
-    public ResponseEntity<RouteResponseDto> get(@PathVariable Long routeId) {
-        return ResponseEntity.ok(RouteResponseDto.of(routeFindService.get(routeId)));
+    @PostMapping("/finish")
+    public ResponseEntity<RouteFinishResponseDto> finish(@RequestBody RouteFinishRequestDto routeFinishRequestDto) throws ParseException {
+        return ResponseEntity.ok(routeRunService.finish(routeFinishRequestDto));
     }
 }

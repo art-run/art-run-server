@@ -46,4 +46,15 @@ public class Route extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "member_id")
     private Member member;
+
+    public void updateAtFinish(Route route) {
+        this.runRoute = route.runRoute;
+        this.title = route.title;
+        this.distance = route.distance;
+        this.time = route.time;
+        this.kcal = route.kcal;
+        this.color = route.color;
+        this.thickness = route.thickness;
+        this.isPublic = route.isPublic;
+    }
 }

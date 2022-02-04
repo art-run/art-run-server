@@ -1,6 +1,8 @@
 package artrun.artrun.domain.route.service;
 
 import artrun.artrun.domain.route.domain.Route;
+import artrun.artrun.domain.route.dto.RouteFinishRequestDto;
+import artrun.artrun.domain.route.dto.RouteFinishResponseDto;
 import artrun.artrun.domain.route.dto.RouteStartResponseDto;
 import artrun.artrun.domain.route.dto.RouteStartRequestDto;
 import artrun.artrun.domain.route.repository.RouteRepository;
@@ -21,7 +23,11 @@ public class RouteRunService {
         return RouteStartResponseDto.of(routeRepository.save(route));
     }
 
-    public Route finish(Route route) {
-        return routeRepository.save(route);
+    // TODO isOwnedBy check
+    public RouteFinishResponseDto finish(RouteFinishRequestDto routeFinishRequestDto) throws ParseException {
+        Route route = routeRepository.getById(routeFinishRequestDto.getRouteId());
+        route.updateAtFinish(routeFinishRequestDto.toRoute());
+
+        return RouteFinishResponseDto.of(routeRepository.save(route));
     }
 }
