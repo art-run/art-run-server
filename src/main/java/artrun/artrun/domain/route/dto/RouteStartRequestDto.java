@@ -3,12 +3,14 @@ package artrun.artrun.domain.route.dto;
 import artrun.artrun.domain.member.domain.Member;
 import artrun.artrun.domain.route.domain.Route;
 import artrun.artrun.global.util.wktToGeometry;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.locationtech.jts.io.ParseException;
 
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class RouteStartRequestDto {
     private Long memberId;
     private String wktTargetRoute;

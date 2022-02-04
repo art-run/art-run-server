@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class RouteStartResponseDto {
-    private Long RouteId;
+    private Long routeId;
 
     public static RouteStartResponseDto of(Route route) {
         return new RouteStartResponseDto(route.getId());
