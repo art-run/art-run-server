@@ -10,10 +10,10 @@ import artrun.artrun.domain.route.dto.RouteStartRequestDto;
 import artrun.artrun.domain.route.repository.RouteRepository;
 import artrun.artrun.global.util.wktToGeometry;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.locationtech.jts.geom.LineString;
-import org.locationtech.jts.io.ParseException;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -44,7 +44,8 @@ class RouteRunServiceTest {
     }
 
     @Test
-    void start() throws ParseException {
+    @DisplayName("달리기를 시작할 때, 멤버 아이디와 목표 경로를 받아서 새로운 경로를 생성한다.")
+    void start() {
         // given
         LineString targetRoute = (LineString) wktToGeometry.wktToGeometry("LINESTRING (30 10, 10 30, 40 40)");
         Route route = Route.builder()
@@ -68,7 +69,8 @@ class RouteRunServiceTest {
     }
 
     @Test
-    void finish() throws ParseException {
+    @DisplayName("달리기를 종료할 때, 달린 경로 포함 필요한 정보들을 받아서 경로 정보를 업데이트한다.")
+    void finish() {
         //given
         String wktRunRoute = "LINESTRING (29 11, 11 31, 42 41)";
         String title = "달리기 성공!";

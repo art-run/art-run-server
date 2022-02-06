@@ -4,7 +4,6 @@ import artrun.artrun.domain.member.domain.Member;
 import artrun.artrun.domain.route.domain.Route;
 import artrun.artrun.global.util.wktToGeometry;
 import lombok.*;
-import org.locationtech.jts.io.ParseException;
 
 @Getter
 @Setter
@@ -15,7 +14,7 @@ public class RouteStartRequestDto {
     private Long memberId;
     private String wktTargetRoute;
 
-    public Route toRoute() throws ParseException {
+    public Route toRoute() {
         Member member = Member.builder()
                 .id(memberId)
                 .build();

@@ -8,7 +8,6 @@ import artrun.artrun.domain.route.dto.RouteStartResponseDto;
 import artrun.artrun.domain.route.dto.RouteStartRequestDto;
 import artrun.artrun.domain.route.repository.RouteRepository;
 import lombok.RequiredArgsConstructor;
-import org.locationtech.jts.io.ParseException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,14 +18,14 @@ public class RouteRunService {
 
     private final RouteRepository routeRepository;
 
-    public RouteStartResponseDto start(RouteStartRequestDto routeStartRequestDto) throws ParseException {
+    public RouteStartResponseDto start(RouteStartRequestDto routeStartRequestDto) {
         SecurityUtil.isAuthorizedByMemberId(routeStartRequestDto.getMemberId());
 
         Route route = routeStartRequestDto.toRoute();
         return RouteStartResponseDto.of(routeRepository.save(route));
     }
 
-    public RouteFinishResponseDto finish(RouteFinishRequestDto routeFinishRequestDto) throws ParseException {
+    public RouteFinishResponseDto finish(RouteFinishRequestDto routeFinishRequestDto) {
         SecurityUtil.isAuthorizedByMemberId(routeFinishRequestDto.getMemberId());
 
         Route route = routeRepository.getByIdAndMemberId(routeFinishRequestDto.getRouteId(), routeFinishRequestDto.getMemberId());

@@ -6,6 +6,7 @@ import artrun.artrun.domain.auth.dto.AuthResponseDto;
 import artrun.artrun.domain.auth.dto.TokenDto;
 import artrun.artrun.domain.auth.service.AuthService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -31,6 +32,7 @@ class AuthControllerTest extends BaseTestController {
     AuthService authService;
 
     @Test
+    @DisplayName("email과 password를 넘기면 회원가입을 한 뒤 성공하면 email을 반환한다.")
     void signupSuccess() throws Exception {
         // given
         String email = "nnyy@gmail.com";
@@ -55,6 +57,7 @@ class AuthControllerTest extends BaseTestController {
     }
 
     @Test
+    @DisplayName("로그인을 성공하면 JWT 토큰을 반환한다.")
     void loginSuccess() throws Exception{
         // given
         String email = "nnyy@gmail.com";

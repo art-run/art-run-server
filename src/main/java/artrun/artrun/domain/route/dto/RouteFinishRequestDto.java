@@ -3,7 +3,6 @@ package artrun.artrun.domain.route.dto;
 import artrun.artrun.domain.route.domain.Route;
 import artrun.artrun.global.util.wktToGeometry;
 import lombok.*;
-import org.locationtech.jts.io.ParseException;
 
 @Getter
 @Setter
@@ -22,7 +21,7 @@ public class RouteFinishRequestDto {
     private Byte thickness;
     private Boolean isPublic;
 
-    public Route toRoute() throws ParseException {
+    public Route toRoute() {
         return Route.builder()
                 .runRoute(wktToGeometry.wktToGeometry(wktRunRoute))
                 .title(title)

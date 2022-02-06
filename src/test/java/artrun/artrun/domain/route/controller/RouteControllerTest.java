@@ -8,6 +8,7 @@ import artrun.artrun.domain.route.dto.RouteStartResponseDto;
 import artrun.artrun.domain.route.repository.RouteRepository;
 import artrun.artrun.domain.route.service.RouteFindService;
 import artrun.artrun.domain.route.service.RouteRunService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -43,6 +44,7 @@ class RouteControllerTest extends BaseTestController {
     }
 
     @Test
+    @DisplayName("달리기를 시작할 때, 멤버 아이디와 목표 경로를 넘기면 새 경로의 아이디를 반환한다.")
     void start() throws Exception {
         // given
         RouteStartRequestDto routeStartRequestDto = RouteStartRequestDto.builder()
@@ -66,6 +68,7 @@ class RouteControllerTest extends BaseTestController {
     }
 
     @Test
+    @DisplayName("달리기를 종료할 때, 달린 경로 포함 필요한 정보들을 넘기면 업데이트된 경로의 아이디를 반환한다.")
     void finish() throws Exception {
         // given
         RouteFinishRequestDto routeFinishRequestDto = RouteFinishRequestDto.builder()

@@ -4,7 +4,6 @@ import artrun.artrun.domain.route.dto.*;
 import artrun.artrun.domain.route.service.RouteFindService;
 import artrun.artrun.domain.route.service.RouteRunService;
 import lombok.AllArgsConstructor;
-import org.locationtech.jts.io.ParseException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,12 +22,12 @@ public class RouteController {
     }
 
     @PostMapping("/start")
-    public ResponseEntity<RouteStartResponseDto> start(@RequestBody RouteStartRequestDto routeStartRequestDto) throws ParseException {
+    public ResponseEntity<RouteStartResponseDto> start(@RequestBody RouteStartRequestDto routeStartRequestDto) {
         return ResponseEntity.ok(routeRunService.start(routeStartRequestDto));
     }
 
     @PostMapping("/finish")
-    public ResponseEntity<RouteFinishResponseDto> finish(@RequestBody RouteFinishRequestDto routeFinishRequestDto) throws ParseException {
+    public ResponseEntity<RouteFinishResponseDto> finish(@RequestBody RouteFinishRequestDto routeFinishRequestDto) {
         return ResponseEntity.ok(routeRunService.finish(routeFinishRequestDto));
     }
 }
