@@ -12,6 +12,7 @@ import org.locationtech.jts.io.ParseException;
 @NoArgsConstructor
 public class RouteFinishRequestDto {
     private Long routeId;
+    private Long memberId;
     private String wktRunRoute;
     private String title;
     private int distance;
