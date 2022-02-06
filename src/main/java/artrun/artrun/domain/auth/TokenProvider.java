@@ -26,7 +26,7 @@ public class TokenProvider {
 
     private static final String AUTHORITIES_KEY = "auth";
     private static final String BEARER_TYPE = "bearer";
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30;
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 300;
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7;
 
     private final Key key;
@@ -45,7 +45,7 @@ public class TokenProvider {
         Date accessTokenExpiresIn = new Date(now + ACCESS_TOKEN_EXPIRE_TIME);
 
         String accessToken = Jwts.builder()
-                .setSubject(authentication.getName())       // payload "sub": "name"
+                .setSubject(authentication.getName())       // payload "sub": memberId ex) 1L
                 .claim(AUTHORITIES_KEY, authorities)        // payload "auth": "ROLE_USER"
                 .setExpiration(accessTokenExpiresIn)        // payload "exp": ex) 1516239022
                 .signWith(key, SignatureAlgorithm.HS512)    // header "alg": "HS512"
