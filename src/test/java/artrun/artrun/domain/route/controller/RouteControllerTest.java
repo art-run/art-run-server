@@ -1,6 +1,8 @@
 package artrun.artrun.domain.route.controller;
 
 import artrun.artrun.domain.BaseTestController;
+import artrun.artrun.domain.route.dto.RouteFinishRequestDto;
+import artrun.artrun.domain.route.dto.RouteFinishResponseDto;
 import artrun.artrun.domain.route.dto.RouteStartRequestDto;
 import artrun.artrun.domain.route.dto.RouteStartResponseDto;
 import artrun.artrun.domain.route.repository.RouteRepository;
@@ -64,6 +66,33 @@ class RouteControllerTest extends BaseTestController {
     }
 
     @Test
-    void finish() {
+    void finish() throws Exception {
+        // given
+        RouteFinishRequestDto routeFinishRequestDto = RouteFinishRequestDto.builder()
+                .routeId(1L)
+                .memberId(1L)
+                .wktRunRoute("LINESTRING (29 11, 11 31, 42 41)")
+                .title("달리기 완료!")
+                .distance(1235)
+                .time(295)
+                .kcal(64)
+                .color("B00020")
+                .thickness((byte) 3)
+                .isPublic(Boolean.TRUE)
+                .build();
+
+        // when
+        RouteFinishResponseDto routeFinishResponseDto = new RouteFinishResponseDto(1L);
+        when(routeRunService.finish(any())).thenReturn(routeFinishResponseDto);
+
+        // then
+        String requestBody = objectMapper.writeValueAsString(routeFinishRequestDto);
+        mockMvc.perform(post("/route/finish")
+                        .content(requestBody)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
+                .andDo(print())
+                .andExpect(jsonPath("routeId").value(routeFinishRequestDto.getRouteId()))
+                .andExpect(status().isOk());
     }
 }
