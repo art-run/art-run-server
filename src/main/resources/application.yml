@@ -4,6 +4,11 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.spatial.dialect.mysql.MySQL56InnoDBSpatialDialect
+
 jwt:
   secret: ENC(NMHO5QOhkLEeeSWD5CV+c4LuMCCP0L4rvnWw5/WjguZtEqPPSY5LKl0PXVfoIFOdobzZQojUHM0zWKlHDyoRaiM5KvYfjsqUFxRv7nc5fXFkOMdaoAESOd6CzLhcjEfm5l6BrS8/1qk=)
 ---
@@ -12,7 +17,7 @@ spring:
     activate:
       on-profile: local
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/art-run?serverTimezone=UTC&characterEncoding=UTF-8
+    url: jdbc:mysql://127.0.0.1:3306/art-run?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver

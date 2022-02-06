@@ -30,8 +30,6 @@ class AuthControllerTest extends BaseTestController {
     @MockBean
     AuthService authService;
 
-    ObjectMapper objectMapper = new ObjectMapper();
-
     @Test
     void signupSuccess() throws Exception {
         // given

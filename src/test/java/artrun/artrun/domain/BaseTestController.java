@@ -4,6 +4,7 @@ import artrun.artrun.domain.auth.TokenProvider;
 import artrun.artrun.domain.auth.exception.JwtAccessDeniedHandler;
 import artrun.artrun.domain.auth.exception.JwtAuthenticationEntryPoint;
 import artrun.artrun.global.config.security.SecurityConfig;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -26,6 +27,8 @@ public class BaseTestController {
     JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     @MockBean
     JwtAccessDeniedHandler jwtAccessDeniedHandler;
+
+    public static ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     public void setUp() {
