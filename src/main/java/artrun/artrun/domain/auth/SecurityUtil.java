@@ -24,7 +24,7 @@ public class SecurityUtil {
      * @param memberId
      */
     // TODO Exception 개선
-    public static void isAuthorizedByMemberId(Long memberId) {
+    public static Boolean isAuthorizedByMemberId(Long memberId) {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication == null || authentication.getName() == null) {
@@ -34,5 +34,7 @@ public class SecurityUtil {
         if (Long.parseLong(authentication.getName()) != memberId) {
             throw new RuntimeException("토큰과 일치하지 않는 memberId입니다.");
         }
+
+        return true;
     }
 }

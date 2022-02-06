@@ -1,5 +1,6 @@
 package artrun.artrun.domain.route.service;
 
+import artrun.artrun.domain.auth.SecurityUtil;
 import artrun.artrun.domain.member.domain.Member;
 import artrun.artrun.domain.route.domain.Route;
 import artrun.artrun.domain.route.dto.RouteFinishRequestDto;
@@ -8,6 +9,7 @@ import artrun.artrun.domain.route.dto.RouteStartResponseDto;
 import artrun.artrun.domain.route.dto.RouteStartRequestDto;
 import artrun.artrun.domain.route.repository.RouteRepository;
 import artrun.artrun.global.util.wktToGeometry;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.locationtech.jts.geom.LineString;
@@ -19,6 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class RouteRunServiceTest {
@@ -33,6 +36,12 @@ class RouteRunServiceTest {
             .id(1L)
             .nickname("runnerA")
             .build();
+
+    @BeforeAll
+    static void setup() {
+        mockStatic(SecurityUtil.class);
+        given(SecurityUtil.isAuthorizedByMemberId(any())).willReturn(true);
+    }
 
     @Test
     void start() throws ParseException {
@@ -66,6 +75,7 @@ class RouteRunServiceTest {
 
         RouteFinishRequestDto routeFinishRequestDto = RouteFinishRequestDto.builder()
                 .routeId(1L)
+                .memberId(member.getId())
                 .wktRunRoute(wktRunRoute)
                 .title(title)
                 .distance(1235)
@@ -76,14 +86,19 @@ class RouteRunServiceTest {
                 .isPublic(Boolean.TRUE)
                 .build();
 
-        Route route = routeFinishRequestDto.toRoute();
+        Route route = Route.builder()
+                .id(1L)
+                .member(member)
+                .targetRoute(wktToGeometry.wktToGeometry("LINESTRING (29 11, 11 31, 42 41)"))
+                .build();
         given(routeRepository.save(any())).willReturn(route);
-        given(routeRepository.getById(any())).willReturn(route);
+        given(routeRepository.getByIdAndMemberId(any(), any())).willReturn(route);
+
         //when
         RouteFinishResponseDto routeFinishResponseDto = routeRunService.finish(routeFinishRequestDto);
 
         //then
-        Route savedRoute = routeRepository.getById(routeFinishResponseDto.getRouteId());
+        Route savedRoute = routeRepository.getByIdAndMemberId(routeFinishResponseDto.getRouteId(), routeFinishRequestDto.getMemberId());
         assertThat(savedRoute.getRunRoute().toString().equals(wktRunRoute));
         assertThat(savedRoute.getTitle().equals(title));
     }
