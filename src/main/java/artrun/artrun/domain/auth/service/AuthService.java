@@ -4,7 +4,7 @@ import artrun.artrun.domain.auth.TokenProvider;
 import artrun.artrun.domain.auth.domain.RefreshToken;
 import artrun.artrun.domain.auth.dto.AuthRequestDto;
 import artrun.artrun.domain.auth.dto.AuthResponseDto;
-import artrun.artrun.domain.auth.dto.TokenDto;
+import artrun.artrun.domain.auth.dto.TokenResponseDto;
 import artrun.artrun.domain.auth.dto.TokenRequestDto;
 import artrun.artrun.domain.auth.repository.RefreshTokenRepository;
 import artrun.artrun.domain.member.domain.Member;
@@ -37,7 +37,7 @@ public class AuthService {
         return AuthResponseDto.of(memberRepository.save(member));
     }
 
-    public TokenDto login(AuthRequestDto authRequestDto) {
+    public TokenResponseDto login(AuthRequestDto authRequestDto) {
         // 1. Login ID/PW 를 기반으로 AuthenticationToken 생성
         UsernamePasswordAuthenticationToken authenticationToken = authRequestDto.toAuthentication();
 
@@ -47,7 +47,7 @@ public class AuthService {
                 .authenticate(authenticationToken);
 
         // 3. authentication 기반으로 JWT 토큰 생성
-        TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
+        TokenResponseDto tokenDto = tokenProvider.generateTokenDto(authentication);
 
         // 4. RefreshToken 저장
         RefreshToken refreshToken = RefreshToken.builder()
@@ -61,7 +61,7 @@ public class AuthService {
         return tokenDto;
     }
 
-    public TokenDto reissue(TokenRequestDto tokenRequestDto) {
+    public TokenResponseDto reissue(TokenRequestDto tokenRequestDto) {
         // 1. RefreshToken 검증
         if (!tokenProvider.validateToken(tokenRequestDto.getRefreshToken())) {
             throw new RuntimeException("Refresh Token이 유효하지 않습니다.");
@@ -80,7 +80,7 @@ public class AuthService {
         }
 
         // 5. 새로운 토큰 생성
-        TokenDto tokenDto = tokenProvider.generateTokenDto(authentication);
+        TokenResponseDto tokenDto = tokenProvider.generateTokenDto(authentication);
 
         // 6. 저장소에 Refresh Token 업데이트
         RefreshToken newRefreshToken = refreshToken.updateValue(tokenDto.getRefreshToken());

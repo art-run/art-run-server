@@ -3,9 +3,8 @@ package artrun.artrun.domain.auth.controller;
 import artrun.artrun.domain.BaseTestController;
 import artrun.artrun.domain.auth.dto.AuthRequestDto;
 import artrun.artrun.domain.auth.dto.AuthResponseDto;
-import artrun.artrun.domain.auth.dto.TokenDto;
+import artrun.artrun.domain.auth.dto.TokenResponseDto;
 import artrun.artrun.domain.auth.service.AuthService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +66,7 @@ class AuthControllerTest extends BaseTestController {
         authRequestDto.setPassword(password);
 
         // when
-        TokenDto tokenDto = TokenDto.builder()
+        TokenResponseDto tokenDto = TokenResponseDto.builder()
                 .grantType("bearer")
                 .accessToken("testAccessToken")
                 .refreshToken("testRefreshToken")

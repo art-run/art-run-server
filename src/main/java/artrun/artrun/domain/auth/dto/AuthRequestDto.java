@@ -7,10 +7,15 @@ import lombok.Setter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
 @Getter
 @Setter
 public class AuthRequestDto {
+    @Email
     private String email;
+    @NotEmpty
     private String password;
 
 
