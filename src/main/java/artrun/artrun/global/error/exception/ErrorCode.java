@@ -15,9 +15,10 @@ public enum ErrorCode {
     INVALID_TYPE_VALUE(400, "C005", " Invalid Type Value"),
     HANDLE_ACCESS_DENIED(403, "C006", "Access is Denied"),
 
-    // Member
-    EMAIL_DUPLICATION(400, "M001", "Email is Duplication"),
-    LOGIN_INPUT_INVALID(400, "M002", "Login input is invalid"),
+    // Auth
+    EMAIL_DUPLICATION(400, "A001", "Email is Duplication"),
+    LOGIN_INPUT_INVALID(400, "A002", "Login input is invalid"),
+    UNAUTHORIZED(401, "A003", "UnAuthorized"),
 
     // Coupon
     COUPON_ALREADY_USE(400, "CO001", "Coupon was already used"),

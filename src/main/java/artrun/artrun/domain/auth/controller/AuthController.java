@@ -4,12 +4,15 @@ import artrun.artrun.domain.auth.dto.AuthRequestDto;
 import artrun.artrun.domain.auth.dto.AuthResponseDto;
 import artrun.artrun.domain.auth.dto.TokenResponseDto;
 import artrun.artrun.domain.auth.dto.TokenRequestDto;
+import artrun.artrun.domain.auth.exception.AuthenticationException;
 import artrun.artrun.domain.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+
+import static artrun.artrun.global.error.exception.ErrorCode.UNAUTHORIZED;
 
 @RestController
 @RequestMapping("/auth")
@@ -30,5 +33,10 @@ public class AuthController {
     @PostMapping("/reissue")
     public ResponseEntity<TokenResponseDto> reissue(@RequestBody @Valid TokenRequestDto tokenRequestDto) {
         return ResponseEntity.ok(authService.reissue(tokenRequestDto));
+    }
+
+    @GetMapping("/exception")
+    public void exception() {
+        throw new AuthenticationException(UNAUTHORIZED);
     }
 }
