@@ -6,6 +6,7 @@ import artrun.artrun.domain.auth.dto.AuthRequestDto;
 import artrun.artrun.domain.auth.dto.AuthResponseDto;
 import artrun.artrun.domain.auth.dto.TokenResponseDto;
 import artrun.artrun.domain.auth.dto.TokenRequestDto;
+import artrun.artrun.domain.auth.exception.AuthenticationException;
 import artrun.artrun.domain.auth.repository.RefreshTokenRepository;
 import artrun.artrun.domain.member.domain.Member;
 import artrun.artrun.domain.member.repository.MemberRepository;
@@ -16,6 +17,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import static artrun.artrun.global.error.exception.ErrorCode.EMAIL_DUPLICATION;
 
 
 @Service
@@ -30,7 +33,7 @@ public class AuthService {
 
     public AuthResponseDto signup(AuthRequestDto authRequestDto) {
         if(memberRepository.existsByEmail(authRequestDto.getEmail())) {
-            throw new RuntimeException("이미 가입되어 있는 유저입니다.");
+            throw new AuthenticationException(EMAIL_DUPLICATION);
         }
 
         Member member = authRequestDto.toMember(passwordEncoder);
