@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import javax.persistence.EntityNotFoundException;
+
+
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
@@ -70,6 +73,14 @@ public class GlobalExceptionHandler {
         log.error("handleAccessDeniedException", e);
         final ErrorResponse response = ErrorResponse.of(ErrorCode.HANDLE_ACCESS_DENIED);
         return new ResponseEntity<>(response, HttpStatus.valueOf(ErrorCode.HANDLE_ACCESS_DENIED.getStatus()));
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    protected ResponseEntity<ErrorResponse> handleEntityNotFoundException(final EntityNotFoundException e) {
+        log.error("handleEntityNotFoundException", e);
+        final ErrorCode errorCode = ErrorCode.ENTITY_NOT_FOUND;
+        final ErrorResponse response = ErrorResponse.of(errorCode);
+        return new ResponseEntity<>(response, HttpStatus.valueOf(errorCode.getStatus()));
     }
 
     @ExceptionHandler({BusinessException.class, AuthenticationException.class})
