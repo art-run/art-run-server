@@ -1,10 +1,7 @@
 package artrun.artrun.domain.route.controller;
 
 import artrun.artrun.domain.BaseTestController;
-import artrun.artrun.domain.route.dto.RouteFinishRequestDto;
-import artrun.artrun.domain.route.dto.RouteFinishResponseDto;
-import artrun.artrun.domain.route.dto.RouteStartRequestDto;
-import artrun.artrun.domain.route.dto.RouteStartResponseDto;
+import artrun.artrun.domain.route.dto.*;
 import artrun.artrun.domain.route.repository.RouteRepository;
 import artrun.artrun.domain.route.service.RouteFindService;
 import artrun.artrun.domain.route.service.RouteRunService;
@@ -16,9 +13,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import javax.persistence.EntityNotFoundException;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -40,7 +40,19 @@ class RouteControllerTest extends BaseTestController {
     RouteRepository routeRepository;
 
     @Test
-    void get() {
+    @DisplayName("경로의 아이디를 조회할 때, 경로의 아이디가 없으면 ENTITY_NOT_FOUND 예외를 반환한다.")
+    void getRouteNotfound() throws Exception{
+        // given
+
+        // when
+        when(routeFindService.get(any())).thenThrow(new EntityNotFoundException("not found"));
+
+        // then
+        mockMvc.perform(get("/route/100")
+                        .with(csrf()))
+                .andDo(print())
+                .andExpect(jsonPath("code").value("C003"))
+                .andExpect(status().is4xxClientError());
     }
 
     @Test
