@@ -2,6 +2,7 @@ package artrun.artrun.domain.auth.controller;
 
 import artrun.artrun.domain.BaseTestController;
 import artrun.artrun.domain.auth.dto.LoginRequestDto;
+import artrun.artrun.domain.auth.dto.SignupRequestDto;
 import artrun.artrun.domain.auth.dto.SignupResponseDto;
 import artrun.artrun.domain.auth.dto.TokenResponseDto;
 import artrun.artrun.domain.auth.exception.AuthenticationException;
@@ -51,13 +52,22 @@ class AuthControllerTest extends BaseTestController {
     @DisplayName("email과 password를 넘기면 회원가입을 한 뒤 성공하면 email을 반환한다.")
     void signupSuccess() throws Exception {
         // given
+        SignupRequestDto signupRequestDto = SignupRequestDto.builder()
+                .email("nnyy@gmail.com")
+                .password("password01")
+                .nickname("nnyy")
+                .gender("MALE")
+                .height(188)
+                .weight(77)
+                .age((short) 20)
+                .build();
 
         // when
-        SignupResponseDto signupResponseDto = new SignupResponseDto(loginRequestDto.getEmail());
+        SignupResponseDto signupResponseDto = new SignupResponseDto(signupRequestDto.getEmail());
         when(authService.signup(any())).thenReturn(signupResponseDto);
 
         // then
-        String requestBody = objectMapper.writeValueAsString(loginRequestDto);
+        String requestBody = objectMapper.writeValueAsString(signupRequestDto);
         mockMvc.perform(post("/auth/signup")
                         .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -96,13 +106,22 @@ class AuthControllerTest extends BaseTestController {
     @DisplayName("회원가입 시 email이 중복이면 ErrorResponse 객체를 반환한다.")
     void singupEmailDuplication() throws Exception {
         // given
+        SignupRequestDto signupRequestDto = SignupRequestDto.builder()
+                .email("nnyy@gmail.com")
+                .password("password01")
+                .nickname("nnyy")
+                .gender("MALE")
+                .height(188)
+                .weight(77)
+                .age((short) 20)
+                .build();
 
         // when
-        SignupResponseDto signupResponseDto = new SignupResponseDto(loginRequestDto.getEmail());
+        SignupResponseDto signupResponseDto = new SignupResponseDto(signupRequestDto.getEmail());
         when(authService.signup(any())).thenThrow(new AuthenticationException(EMAIL_DUPLICATION));
 
         // then
-        String requestBody = objectMapper.writeValueAsString(loginRequestDto);
+        String requestBody = objectMapper.writeValueAsString(signupRequestDto);
         mockMvc.perform(post("/auth/signup")
                         .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON)
