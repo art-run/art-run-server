@@ -43,12 +43,18 @@ public class SignupRequestDto {
                 .email(email)
                 .password(passwordEncoder.encode(password))
                 .nickname(nickname)
+                .profileImg(getRandomProfileImg())
                 .gender(Gender.valueOf(gender))
                 .height(height)
                 .weight(weight)
                 .age(age)
                 .authority(Authority.ROLE_USER)
                 .build();
+    }
+
+    private String getRandomProfileImg() {
+        int value = ((int) (Math.random() * 10) % 9 + 1);
+        return "https://randomuser.me/api/portraits/lego/" + value + ".jpg";
     }
 
 }
