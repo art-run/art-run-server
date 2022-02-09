@@ -1,11 +1,14 @@
 package artrun.artrun.domain.auth.controller;
 
 import artrun.artrun.domain.BaseTestController;
-import artrun.artrun.domain.auth.dto.AuthRequestDto;
-import artrun.artrun.domain.auth.dto.AuthResponseDto;
-import artrun.artrun.domain.auth.dto.TokenDto;
+import artrun.artrun.domain.auth.dto.LoginRequestDto;
+import artrun.artrun.domain.auth.dto.SignupRequestDto;
+import artrun.artrun.domain.auth.dto.SignupResponseDto;
+import artrun.artrun.domain.auth.dto.TokenResponseDto;
+import artrun.artrun.domain.auth.exception.AuthenticationException;
 import artrun.artrun.domain.auth.service.AuthService;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import artrun.artrun.domain.auth.service.CustomUserDetailsService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static artrun.artrun.global.error.exception.ErrorCode.EMAIL_DUPLICATION;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
@@ -31,29 +35,100 @@ class AuthControllerTest extends BaseTestController {
     @MockBean
     AuthService authService;
 
+    @MockBean
+    CustomUserDetailsService customUserDetailsService;
+
+    LoginRequestDto loginRequestDto = new LoginRequestDto();
+
+    @BeforeEach
+    public void setup() {
+        String email = "nnyy@gmail.com";
+        String password = "password01";
+        loginRequestDto.setEmail(email);
+        loginRequestDto.setPassword(password);
+    }
+
     @Test
     @DisplayName("email과 password를 넘기면 회원가입을 한 뒤 성공하면 email을 반환한다.")
     void signupSuccess() throws Exception {
         // given
-        String email = "nnyy@gmail.com";
-        String password = "password01";
-        AuthRequestDto authRequestDto = new AuthRequestDto();
-        authRequestDto.setEmail(email);
-        authRequestDto.setPassword(password);
+        SignupRequestDto signupRequestDto = SignupRequestDto.builder()
+                .email("nnyy@gmail.com")
+                .password("password01")
+                .nickname("nnyy")
+                .gender("MALE")
+                .height((short) 188)
+                .weight((short) 77)
+                .age((short) 20)
+                .build();
 
         // when
-        AuthResponseDto authResponseDto = new AuthResponseDto(email);
-        when(authService.signup(any())).thenReturn(authResponseDto);
+        SignupResponseDto signupResponseDto = new SignupResponseDto(signupRequestDto.getEmail());
+        when(authService.signup(any())).thenReturn(signupResponseDto);
 
         // then
-        String requestBody = objectMapper.writeValueAsString(authRequestDto);
+        String requestBody = objectMapper.writeValueAsString(signupRequestDto);
         mockMvc.perform(post("/auth/signup")
                         .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON)
                         .with(csrf()))
                 .andDo(print())
-                .andExpect(jsonPath("email").value(email))
+                .andExpect(jsonPath("email").value(loginRequestDto.getEmail()))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("회원가입 시 email 형식이 틀리면 ErrorResponse 객체를 반환한다.")
+    void singupEmailValid() throws Exception {
+        // given
+        LoginRequestDto loginRequestDto = new LoginRequestDto();
+        String email = "nnyy";
+        String password = "password01";
+        loginRequestDto.setEmail(email);
+        loginRequestDto.setPassword(password);
+
+        // when
+        SignupResponseDto signupResponseDto = new SignupResponseDto(loginRequestDto.getEmail());
+        when(authService.signup(any())).thenReturn(signupResponseDto);
+
+        // then
+        String requestBody = objectMapper.writeValueAsString(loginRequestDto);
+        mockMvc.perform(post("/auth/signup")
+                        .content(requestBody)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
+                .andDo(print())
+                .andExpect(jsonPath("code").value("C001"))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    @DisplayName("회원가입 시 email이 중복이면 ErrorResponse 객체를 반환한다.")
+    void singupEmailDuplication() throws Exception {
+        // given
+        SignupRequestDto signupRequestDto = SignupRequestDto.builder()
+                .email("nnyy@gmail.com")
+                .password("password01")
+                .nickname("nnyy")
+                .gender("MALE")
+                .height((short) 188)
+                .weight((short) 77)
+                .age((short) 20)
+                .build();
+
+        // when
+        SignupResponseDto signupResponseDto = new SignupResponseDto(signupRequestDto.getEmail());
+        when(authService.signup(any())).thenThrow(new AuthenticationException(EMAIL_DUPLICATION));
+
+        // then
+        String requestBody = objectMapper.writeValueAsString(signupRequestDto);
+        mockMvc.perform(post("/auth/signup")
+                        .content(requestBody)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .with(csrf()))
+                .andDo(print())
+                .andExpect(jsonPath("code").value("A001"))
+                .andExpect(status().is4xxClientError());
     }
 
     @Test
@@ -62,12 +137,12 @@ class AuthControllerTest extends BaseTestController {
         // given
         String email = "nnyy@gmail.com";
         String password = "password01";
-        AuthRequestDto authRequestDto = new AuthRequestDto();
-        authRequestDto.setEmail(email);
-        authRequestDto.setPassword(password);
+        LoginRequestDto loginRequestDto = new LoginRequestDto();
+        loginRequestDto.setEmail(email);
+        loginRequestDto.setPassword(password);
 
         // when
-        TokenDto tokenDto = TokenDto.builder()
+        TokenResponseDto tokenDto = TokenResponseDto.builder()
                 .grantType("bearer")
                 .accessToken("testAccessToken")
                 .refreshToken("testRefreshToken")
@@ -76,7 +151,7 @@ class AuthControllerTest extends BaseTestController {
         when(authService.login(any())).thenReturn(tokenDto);
 
         // then
-        String requestBody = objectMapper.writeValueAsString(authRequestDto);
+        String requestBody = objectMapper.writeValueAsString(loginRequestDto);
         mockMvc.perform(post("/auth/login")
                         .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -87,10 +162,6 @@ class AuthControllerTest extends BaseTestController {
                 .andExpect(jsonPath("refreshToken").value(tokenDto.getRefreshToken()))
                 .andExpect(jsonPath("accessTokenExpiresIn").value(tokenDto.getAccessTokenExpiresIn()))
                 .andExpect(status().isOk());
-    }
-
-    @Test
-    void loginFail() {
     }
 
     @Test

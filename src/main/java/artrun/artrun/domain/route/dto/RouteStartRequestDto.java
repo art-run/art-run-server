@@ -5,13 +5,20 @@ import artrun.artrun.domain.route.domain.Route;
 import artrun.artrun.global.util.wktToGeometry;
 import lombok.*;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
+
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class RouteStartRequestDto {
+
+    @Positive
     private Long memberId;
+
+    @NotEmpty
     private String wktTargetRoute;
 
     public Route toRoute() {

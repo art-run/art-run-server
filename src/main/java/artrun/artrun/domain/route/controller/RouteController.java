@@ -18,6 +18,7 @@ public class RouteController {
 
     @GetMapping("/{routeId}")
     public ResponseEntity<RouteResponseDto> get(@PathVariable Long routeId) {
+        System.out.println("test");
         return ResponseEntity.ok(RouteResponseDto.of(routeFindService.get(routeId)));
     }
 
