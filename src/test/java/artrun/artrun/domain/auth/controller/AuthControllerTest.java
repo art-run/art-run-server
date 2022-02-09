@@ -57,8 +57,8 @@ class AuthControllerTest extends BaseTestController {
                 .password("password01")
                 .nickname("nnyy")
                 .gender("MALE")
-                .height(188)
-                .weight(77)
+                .height((short) 188)
+                .weight((short) 77)
                 .age((short) 20)
                 .build();
 
@@ -111,8 +111,8 @@ class AuthControllerTest extends BaseTestController {
                 .password("password01")
                 .nickname("nnyy")
                 .gender("MALE")
-                .height(188)
-                .weight(77)
+                .height((short) 188)
+                .weight((short) 77)
                 .age((short) 20)
                 .build();
 
