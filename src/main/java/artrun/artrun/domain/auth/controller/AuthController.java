@@ -1,13 +1,15 @@
 package artrun.artrun.domain.auth.controller;
 
-import artrun.artrun.domain.auth.dto.AuthRequestDto;
-import artrun.artrun.domain.auth.dto.AuthResponseDto;
-import artrun.artrun.domain.auth.dto.TokenDto;
-import artrun.artrun.domain.auth.dto.TokenRequestDto;
+import artrun.artrun.domain.auth.dto.*;
+import artrun.artrun.domain.auth.exception.AuthenticationException;
 import artrun.artrun.domain.auth.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+
+import static artrun.artrun.global.error.exception.ErrorCode.UNAUTHORIZED;
 
 @RestController
 @RequestMapping("/auth")
@@ -16,17 +18,22 @@ public class AuthController {
     private final AuthService authService;
 
     @PostMapping("/signup")
-    public ResponseEntity<AuthResponseDto> signup(@RequestBody AuthRequestDto memberRequestDto) {
-        return ResponseEntity.ok(authService.signup(memberRequestDto));
+    public ResponseEntity<SignupResponseDto> signup(@RequestBody @Valid SignupRequestDto signupRequestDto) {
+        return ResponseEntity.ok(authService.signup(signupRequestDto));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<TokenDto> login(@RequestBody AuthRequestDto memberRequestDto) {
+    public ResponseEntity<TokenResponseDto> login(@RequestBody @Valid LoginRequestDto memberRequestDto) {
         return ResponseEntity.ok(authService.login(memberRequestDto));
     }
 
     @PostMapping("/reissue")
-    public ResponseEntity<TokenDto> reissue(@RequestBody TokenRequestDto tokenRequestDto) {
+    public ResponseEntity<TokenResponseDto> reissue(@RequestBody @Valid TokenRequestDto tokenRequestDto) {
         return ResponseEntity.ok(authService.reissue(tokenRequestDto));
+    }
+
+    @GetMapping("/exception")
+    public void exception() {
+        throw new AuthenticationException(UNAUTHORIZED);
     }
 }

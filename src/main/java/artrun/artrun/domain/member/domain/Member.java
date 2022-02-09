@@ -31,7 +31,12 @@ public class Member extends BaseEntity {
 
     private String profileImg;
 
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
     private int height;
 
     private int weight;
+
+    private short age;
 }
