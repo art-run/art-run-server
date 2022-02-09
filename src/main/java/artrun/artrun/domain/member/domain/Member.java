@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "members")
@@ -34,9 +35,33 @@ public class Member extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    private int height;
+    private short height;
 
-    private int weight;
+    private short weight;
 
     private short age;
+
+    public void update(Member member) {
+        if(Objects.nonNull(member.getEmail())) {
+            this.email = member.getEmail();
+        }
+        if(Objects.nonNull(member.getNickname())) {
+            this.nickname = member.getNickname();
+        }
+        if(Objects.nonNull(member.getProfileImg())) {
+            this.profileImg = member.getProfileImg();
+        }
+        if(Objects.nonNull(member.getGender())) {
+            this.gender = member.getGender();
+        }
+        if(member.getHeight() != 0) {
+            this.height = member.getHeight();
+        }
+        if(member.getWeight() != 0) {
+            this.weight = member.getWeight();
+        }
+        if(member.getAge() != 0) {
+            this.age = member.getAge();
+        }
+    }
 }

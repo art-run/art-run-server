@@ -4,7 +4,6 @@ import artrun.artrun.domain.member.domain.Authority;
 import artrun.artrun.domain.member.domain.Gender;
 import artrun.artrun.domain.member.domain.Member;
 import lombok.*;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import javax.validation.constraints.Email;
@@ -30,10 +29,10 @@ public class SignupRequestDto {
     private String gender;
 
     @Positive
-    private int height;
+    private short height;
 
     @Positive
-    private int weight;
+    private short weight;
 
     @Positive
     private short age;
