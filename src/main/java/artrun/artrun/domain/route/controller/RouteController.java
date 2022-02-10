@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/route")
 @AllArgsConstructor
 public class RouteController {
 
@@ -19,20 +18,19 @@ public class RouteController {
     private final RouteFindService routeFindService;
 
     @ApiOperation(value= "routeId로 Route 정보 조회")
-    @GetMapping("/{routeId}")
+    @GetMapping("/route/{routeId}")
     public ResponseEntity<RouteResponseDto> get(@PathVariable Long routeId) {
-        System.out.println("test");
         return ResponseEntity.ok(RouteResponseDto.of(routeFindService.get(routeId)));
     }
 
     @ApiOperation(value="달리기 시작", notes = "목표 경로 그리기가 끝나고, 시작 버튼을 누를 때")
-    @PostMapping("/start")
+    @PostMapping("/route/start")
     public ResponseEntity<RouteStartResponseDto> start(@RequestBody RouteStartRequestDto routeStartRequestDto) {
         return ResponseEntity.ok(routeRunService.start(routeStartRequestDto));
     }
 
     @ApiOperation(value="달리기 종료", notes = "달리기 종료 및 기록카드 작성 후, 저장 버튼을 누를 때")
-    @PostMapping("/finish")
+    @PostMapping("/route/finish")
     public ResponseEntity<RouteFinishResponseDto> finish(@RequestBody RouteFinishRequestDto routeFinishRequestDto) {
         return ResponseEntity.ok(routeRunService.finish(routeFinishRequestDto));
     }
