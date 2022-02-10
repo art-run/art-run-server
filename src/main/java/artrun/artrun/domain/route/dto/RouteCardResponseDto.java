@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class RouteCardResponseDto {
 
+    private Long routeId;
     private String nickname;
     private String profileImg;
     private String title;
@@ -23,6 +24,7 @@ public class RouteCardResponseDto {
 
     public static RouteCardResponseDto of(Route route) {
         return RouteCardResponseDto.builder()
+                .routeId(route.getId())
                 .nickname(route.getMember().getNickname())
                 .profileImg(route.getMember().getProfileImg())
                 .title(route.getTitle())

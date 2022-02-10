@@ -3,7 +3,6 @@ package artrun.artrun.domain.route.controller;
 import artrun.artrun.domain.route.dto.*;
 import artrun.artrun.domain.route.service.RouteFindService;
 import artrun.artrun.domain.route.service.RouteRunService;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -39,9 +38,15 @@ public class RouteController {
         return ResponseEntity.ok(routeRunService.finish(routeFinishRequestDto));
     }
 
-    @ApiOperation(value="소셜-최신기록", notes="소셜 피드에서 Routes를 반환함 (정렬 기준: 최신순)")
+    @ApiOperation(value="소셜 - 최신기록", notes="소셜 피드에서 Routes를 반환함 (정렬 기준: 최신순)")
     @GetMapping("/routes")
-    public ResponseEntity<List<RouteCardResponseDto>> getRoutes(@PageableDefault Pageable pageable) {
-        return ResponseEntity.ok(routeFindService.getRoutes(pageable));
+    public ResponseEntity<List<RouteCardResponseDto>> getRoutes(@RequestParam(required = false) Long lastRouteId, @PageableDefault(size=5) Pageable pageable) {
+        return ResponseEntity.ok(routeFindService.getRoutes(lastRouteId, pageable));
+    }
+
+    @ApiOperation(value="소셜 - 내 기록", notes="소셜 피드에서 내 Routes를 반환함 (정렬 기준: 최신순)")
+    @GetMapping("/routes/me")
+    public ResponseEntity<List<RouteCardResponseDto>> getMyRoutes(@RequestParam(required = false) Long lastRouteId, @PageableDefault(size=5) Pageable pageable) {
+        return ResponseEntity.ok(routeFindService.getMyRoutes(lastRouteId, pageable));
     }
 }

@@ -24,22 +24,36 @@ public class RouteCustomRepositoryImpl implements RouteCustomRepository {
     }
 
     @Override
-    public List<Route> findRecentRoutes(Pageable pageable) {
+    public List<Route> getRoutes(Long lastRouteId, Pageable pageable) {
         final QRoute route = QRoute.route;
 
         return jpaQueryFactory.selectFrom(route)
                 .innerJoin(route.member)
                 .fetchJoin()
-                .where(gtRouteId((long) pageable.getPageNumber()))
+                .where(ltRouteId(lastRouteId))
                 .orderBy(route.id.desc())
-                .limit(2)
+                .limit(pageable.getPageSize())
                 .fetch();
     }
 
-    private BooleanExpression gtRouteId(Long routeId) {
+    @Override
+    public List<Route> getRoutesByMemberId(Long memberId, Long lastRouteId, Pageable pageable) {
+        final QRoute route = QRoute.route;
+
+        return jpaQueryFactory.selectFrom(route)
+                .innerJoin(route.member)
+                .fetchJoin()
+                .where(route.member.id.eq(memberId))
+                .where(ltRouteId(lastRouteId))
+                .orderBy(route.id.desc())
+                .limit(pageable.getPageSize())
+                .fetch();
+    }
+
+    private BooleanExpression ltRouteId(Long routeId) {
         if (routeId == null) {
             return null; // BooleanExpression 자리에 null이 반환되면 조건문에서 자동으로 제거된다
         }
-        return route.id.gt(routeId);
+        return route.id.lt(routeId);
     }
 }

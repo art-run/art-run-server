@@ -6,5 +6,6 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface RouteCustomRepository {
-    List<Route> findRecentRoutes(Pageable pageable);
+    List<Route> getRoutes(Long lastRouteId, Pageable pageable);
+    List<Route> getRoutesByMemberId(Long memberId, Long lastRouteId, Pageable pageable);
 }
