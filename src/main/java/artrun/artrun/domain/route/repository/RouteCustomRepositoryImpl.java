@@ -5,7 +5,6 @@ import artrun.artrun.domain.route.domain.QRoute;
 import artrun.artrun.domain.route.domain.Route;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,12 +18,14 @@ public class RouteCustomRepositoryImpl implements RouteCustomRepository {
 
     private final JPAQueryFactory jpaQueryFactory;
 
+    private final int DEFAULT_PAGE_SIZE = 5;
+
     public RouteCustomRepositoryImpl(JPAQueryFactory jpaQueryFactory) {
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
     @Override
-    public List<Route> getRoutes(Long lastRouteId, Pageable pageable) {
+    public List<Route> getRoutes(Long lastRouteId) {
         final QRoute route = QRoute.route;
 
         return jpaQueryFactory.selectFrom(route)
@@ -32,12 +33,12 @@ public class RouteCustomRepositoryImpl implements RouteCustomRepository {
                 .fetchJoin()
                 .where(ltRouteId(lastRouteId))
                 .orderBy(route.id.desc())
-                .limit(pageable.getPageSize())
+                .limit(DEFAULT_PAGE_SIZE)
                 .fetch();
     }
 
     @Override
-    public List<Route> getRoutesByMemberId(Long memberId, Long lastRouteId, Pageable pageable) {
+    public List<Route> getRoutesByMemberId(Long memberId, Long lastRouteId) {
         final QRoute route = QRoute.route;
 
         return jpaQueryFactory.selectFrom(route)
@@ -46,7 +47,7 @@ public class RouteCustomRepositoryImpl implements RouteCustomRepository {
                 .where(route.member.id.eq(memberId))
                 .where(ltRouteId(lastRouteId))
                 .orderBy(route.id.desc())
-                .limit(pageable.getPageSize())
+                .limit(DEFAULT_PAGE_SIZE)
                 .fetch();
     }
 
