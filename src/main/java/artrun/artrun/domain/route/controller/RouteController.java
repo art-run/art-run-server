@@ -6,8 +6,12 @@ import artrun.artrun.domain.route.service.RouteRunService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -33,5 +37,11 @@ public class RouteController {
     @PostMapping("/route/finish")
     public ResponseEntity<RouteFinishResponseDto> finish(@RequestBody RouteFinishRequestDto routeFinishRequestDto) {
         return ResponseEntity.ok(routeRunService.finish(routeFinishRequestDto));
+    }
+
+    @ApiOperation(value="소셜-최신기록", notes="소셜 피드에서 Routes를 반환함 (정렬 기준: 최신순)")
+    @GetMapping("/routes")
+    public ResponseEntity<List<RouteCardResponseDto>> getRoutes(@PageableDefault Pageable pageable) {
+        return ResponseEntity.ok(routeFindService.getRoutes(pageable));
     }
 }
