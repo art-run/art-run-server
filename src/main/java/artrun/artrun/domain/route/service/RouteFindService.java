@@ -1,6 +1,6 @@
 package artrun.artrun.domain.route.service;
 
-import artrun.artrun.domain.route.domain.Route;
+import artrun.artrun.domain.route.dto.RouteResponseDto;
 import artrun.artrun.domain.route.repository.RouteRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,8 +13,7 @@ public class RouteFindService {
 
     private final RouteRepository routeRepository;
 
-    // TODO Use DTO
-    public Route get(Long routeId) {
-        return routeRepository.getById(routeId);
+    public RouteResponseDto get(Long routeId) {
+        return RouteResponseDto.of(routeRepository.getById(routeId));
     }
 }

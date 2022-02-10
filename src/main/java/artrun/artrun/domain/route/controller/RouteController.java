@@ -20,7 +20,7 @@ public class RouteController {
     @ApiOperation(value= "routeId로 Route 정보 조회")
     @GetMapping("/route/{routeId}")
     public ResponseEntity<RouteResponseDto> get(@PathVariable Long routeId) {
-        return ResponseEntity.ok(RouteResponseDto.of(routeFindService.get(routeId)));
+        return ResponseEntity.ok(routeFindService.get(routeId));
     }
 
     @ApiOperation(value="달리기 시작", notes = "목표 경로 그리기가 끝나고, 시작 버튼을 누를 때")
