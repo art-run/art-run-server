@@ -79,7 +79,7 @@ class AuthControllerTest extends BaseTestController {
 
     @Test
     @DisplayName("회원가입 시 email 형식이 틀리면 ErrorResponse 객체를 반환한다.")
-    void singupEmailValid() throws Exception {
+    void signupEmailValid() throws Exception {
         // given
         LoginRequestDto loginRequestDto = new LoginRequestDto();
         String email = "nnyy";
@@ -104,7 +104,7 @@ class AuthControllerTest extends BaseTestController {
 
     @Test
     @DisplayName("회원가입 시 email이 중복이면 ErrorResponse 객체를 반환한다.")
-    void singupEmailDuplication() throws Exception {
+    void signupEmailDuplication() throws Exception {
         // given
         SignupRequestDto signupRequestDto = SignupRequestDto.builder()
                 .email("nnyy@gmail.com")
