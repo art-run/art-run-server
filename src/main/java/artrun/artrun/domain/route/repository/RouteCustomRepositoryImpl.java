@@ -25,12 +25,13 @@ public class RouteCustomRepositoryImpl implements RouteCustomRepository {
     }
 
     @Override
-    public List<Route> getRoutes(Long lastRouteId) {
+    public List<Route> getPublicRoutes(Long lastRouteId) {
         final QRoute route = QRoute.route;
 
         return jpaQueryFactory.selectFrom(route)
                 .innerJoin(route.member)
                 .fetchJoin()
+                .where(route.isPublic.eq(true))
                 .where(ltRouteId(lastRouteId))
                 .orderBy(route.id.desc())
                 .limit(DEFAULT_PAGE_SIZE)

@@ -24,8 +24,8 @@ public class RouteFindService {
         return RouteResponseDto.of(routeRepository.getById(routeId));
     }
 
-    public List<RouteCardResponseDto> getRoutes(Long lastRouteId) {
-        List<Route> routeList = routeRepository.getRoutes(lastRouteId);
+    public List<RouteCardResponseDto> getPublicRoutes(Long lastRouteId) {
+        List<Route> routeList = routeRepository.getPublicRoutes(lastRouteId);
         return routeList.stream().map(RouteCardResponseDto::of).collect(Collectors.toList());
     }
 

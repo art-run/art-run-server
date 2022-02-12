@@ -39,7 +39,7 @@ public class RouteController {
     @ApiOperation(value="소셜 - 최신기록", notes="소셜 피드에서 Routes를 반환함 (정렬 기준: 최신순)")
     @GetMapping("/routes")
     public ResponseEntity<List<RouteCardResponseDto>> getRoutes(@RequestParam(required = false) Long lastRouteId) {
-        return ResponseEntity.ok(routeFindService.getRoutes(lastRouteId));
+        return ResponseEntity.ok(routeFindService.getPublicRoutes(lastRouteId));
     }
 
     @ApiOperation(value="소셜 - 내 기록", notes="소셜 피드에서 내 Routes를 반환함 (정렬 기준: 최신순)")

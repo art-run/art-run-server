@@ -65,7 +65,7 @@ class RouteRepositoryTest {
         routeRepository.saveAll(routeList);
 
         // when
-        List<Route> resultRoutes = routeRepository.getRoutes(null);
+        List<Route> resultRoutes = routeRepository.getPublicRoutes(null);
 
         // then
         assertThat(resultRoutes).hasSize(5);
