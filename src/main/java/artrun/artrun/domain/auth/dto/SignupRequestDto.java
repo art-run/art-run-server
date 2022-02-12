@@ -11,9 +11,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Positive;
 
 @Getter
-@Setter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SignupRequestDto {
     @Email
@@ -36,6 +33,17 @@ public class SignupRequestDto {
 
     @Positive
     private short age;
+
+    @Builder
+    public SignupRequestDto(String email, String password, String nickname, String gender, short height, short weight, short age) {
+        this.email = email;
+        this.password = password;
+        this.nickname = nickname;
+        this.gender = gender;
+        this.height = height;
+        this.weight = weight;
+        this.age = age;
+    }
 
     public Member toMember(PasswordEncoder passwordEncoder) {
         return Member.builder()
