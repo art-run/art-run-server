@@ -12,7 +12,7 @@ import javax.validation.constraints.Positive;
 @Setter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RouteStartRequestDto {
 
     @Positive

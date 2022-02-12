@@ -14,7 +14,7 @@ import javax.validation.constraints.Positive;
 @Setter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SignupRequestDto {
     @Email
     private String email;

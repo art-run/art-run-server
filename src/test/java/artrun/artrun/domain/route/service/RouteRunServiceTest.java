@@ -55,9 +55,7 @@ class RouteRunServiceTest {
         given(routeRepository.save(any())).willReturn(route);
         given(routeRepository.getById(any())).willReturn(route);
 
-        RouteStartRequestDto routeStartRequestDto = new RouteStartRequestDto();
-        routeStartRequestDto.setMemberId(member.getId());
-        routeStartRequestDto.setWktTargetRoute(String.valueOf(targetRoute));
+        RouteStartRequestDto routeStartRequestDto = RouteStartRequestDto.builder().memberId(member.getId()).wktTargetRoute(String.valueOf(targetRoute)).build();
 
         // when
         RouteStartResponseDto routeResponseDto = routeRunService.start(routeStartRequestDto);

@@ -1,15 +1,12 @@
 package artrun.artrun.domain.member.dto;
 
 import artrun.artrun.domain.member.domain.Member;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberResponseDto {
     private String email;
     private String nickname;

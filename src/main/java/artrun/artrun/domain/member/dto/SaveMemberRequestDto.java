@@ -2,17 +2,14 @@ package artrun.artrun.domain.member.dto;
 
 import artrun.artrun.domain.member.domain.Gender;
 import artrun.artrun.domain.member.domain.Member;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Objects;
 
 @Getter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SaveMemberRequestDto {
     private String email;
     private String nickname;
