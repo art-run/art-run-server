@@ -7,8 +7,6 @@ import lombok.*;
 import java.util.Objects;
 
 @Getter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SaveMemberRequestDto {
     private String email;
@@ -18,6 +16,17 @@ public class SaveMemberRequestDto {
     private short height;
     private short weight;
     private short age;
+
+    @Builder
+    public SaveMemberRequestDto(String email, String nickname, String profileImg, String gender, short height, short weight, short age) {
+        this.email = email;
+        this.nickname = nickname;
+        this.profileImg = profileImg;
+        this.gender = gender;
+        this.height = height;
+        this.weight = weight;
+        this.age = age;
+    }
 
     public static Member toMember(SaveMemberRequestDto saveMemberRequestDto) {
         Member.MemberBuilder memberBuilder = Member.builder()
