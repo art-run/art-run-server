@@ -30,10 +30,10 @@ public class MemberResponseDto {
                 .email(member.getEmail())
                 .nickname(member.getNickname())
                 .profileImg(member.getProfileImg())
-                .gender(member.getGender().toString())
-                .height(member.getHeight())
-                .weight(member.getWeight())
-                .age(member.getAge())
+                .gender(member.getBodyInfo().getGender().toString())
+                .height(member.getBodyInfo().getHeight())
+                .weight(member.getBodyInfo().getWeight())
+                .age(member.getBodyInfo().getAge())
                 .build();
     }
 }

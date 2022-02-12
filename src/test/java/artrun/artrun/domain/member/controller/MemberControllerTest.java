@@ -1,6 +1,7 @@
 package artrun.artrun.domain.member.controller;
 
 import artrun.artrun.domain.BaseTestController;
+import artrun.artrun.domain.member.domain.BodyInfo;
 import artrun.artrun.domain.member.domain.Gender;
 import artrun.artrun.domain.member.domain.Member;
 import artrun.artrun.domain.member.dto.MemberResponseDto;
@@ -40,10 +41,12 @@ class MemberControllerTest extends BaseTestController {
                 .email("nnyy@gmail.com")
                 .password("password01")
                 .nickname("nnyy")
-                .gender(Gender.valueOf("MALE"))
-                .height((short) 188)
-                .weight((short) 77)
-                .age((short) 20)
+                .bodyInfo(BodyInfo.builder()
+                        .gender(Gender.valueOf("MALE"))
+                        .height((short) 188)
+                        .weight((short) 77)
+                        .age((short) 20)
+                        .build())
                 .build();
 
         // when
@@ -55,10 +58,10 @@ class MemberControllerTest extends BaseTestController {
                 .andDo(print())
                 .andExpect(jsonPath("email").value(member.getEmail()))
                 .andExpect(jsonPath("nickname").value(member.getNickname()))
-                .andExpect(jsonPath("gender").value(member.getGender().toString()))
-                .andExpect(jsonPath("height").value(String.valueOf(member.getHeight())))
-                .andExpect(jsonPath("weight").value(String.valueOf(member.getWeight())))
-                .andExpect(jsonPath("age").value(String.valueOf(member.getAge())))
+                .andExpect(jsonPath("gender").value(member.getBodyInfo().getGender().toString()))
+                .andExpect(jsonPath("height").value(String.valueOf(member.getBodyInfo().getHeight())))
+                .andExpect(jsonPath("weight").value(String.valueOf(member.getBodyInfo().getWeight())))
+                .andExpect(jsonPath("age").value(String.valueOf(member.getBodyInfo().getAge())))
                 .andExpect(status().isOk());
     }
 
@@ -70,10 +73,12 @@ class MemberControllerTest extends BaseTestController {
                 .email("nnyy@gmail.com")
                 .password("password01")
                 .nickname("nnyy")
-                .gender(Gender.valueOf("MALE"))
-                .height((short) 188)
-                .weight((short) 77)
-                .age((short) 20)
+                .bodyInfo(BodyInfo.builder()
+                        .gender(Gender.valueOf("MALE"))
+                        .height((short) 188)
+                        .weight((short) 77)
+                        .age((short) 20)
+                        .build())
                 .build();
         SaveMemberRequestDto saveMemberRequestDto = SaveMemberRequestDto.builder()
                 .nickname("newnew")
@@ -103,10 +108,12 @@ class MemberControllerTest extends BaseTestController {
                 .email("nnyy@gmail.com")
                 .password("password01")
                 .nickname("nnyy")
-                .gender(Gender.valueOf("MALE"))
-                .height((short) 188)
-                .weight((short) 77)
-                .age((short) 20)
+                .bodyInfo(BodyInfo.builder()
+                        .gender(Gender.valueOf("MALE"))
+                        .height((short) 188)
+                        .weight((short) 77)
+                        .age((short) 20)
+                        .build())
                 .build();
         SaveMemberRequestDto saveMemberRequestDto = SaveMemberRequestDto.builder()
                 .height((short) 189)

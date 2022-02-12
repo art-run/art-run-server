@@ -1,10 +1,9 @@
 package artrun.artrun.domain.member.dto;
 
+import artrun.artrun.domain.member.domain.BodyInfo;
 import artrun.artrun.domain.member.domain.Gender;
 import artrun.artrun.domain.member.domain.Member;
 import lombok.*;
-
-import java.util.Objects;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -29,16 +28,18 @@ public class SaveMemberRequestDto {
     }
 
     public static Member toMember(SaveMemberRequestDto saveMemberRequestDto) {
-        Member.MemberBuilder memberBuilder = Member.builder()
+        Gender gender = saveMemberRequestDto.gender != null ? Gender.valueOf(saveMemberRequestDto.gender) : Gender.UNDEFINED;
+
+        return Member.builder()
                 .email(saveMemberRequestDto.email)
                 .nickname(saveMemberRequestDto.nickname)
-                .profileImg(saveMemberRequestDto.profileImg);
-        if (Objects.nonNull(saveMemberRequestDto.gender)) {
-            memberBuilder.gender(Gender.valueOf(saveMemberRequestDto.gender));
-        }
-        return memberBuilder.height(saveMemberRequestDto.height)
-                .weight(saveMemberRequestDto.weight)
-                .age(saveMemberRequestDto.age)
+                .profileImg(saveMemberRequestDto.profileImg)
+                .bodyInfo(BodyInfo.builder().
+                        gender(gender)
+                        .height(saveMemberRequestDto.height)
+                        .weight(saveMemberRequestDto.weight)
+                        .age(saveMemberRequestDto.age)
+                        .build())
                 .build();
     }
 }

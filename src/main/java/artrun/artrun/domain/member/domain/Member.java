@@ -29,14 +29,8 @@ public class Member extends BaseEntity {
 
     private String profileImg;
 
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
-
-    private short height;
-
-    private short weight;
-
-    private short age;
+    @Embedded
+    private BodyInfo bodyInfo;
 
     public void update(Member member) {
         if(Objects.nonNull(member.getEmail())) {
@@ -48,17 +42,8 @@ public class Member extends BaseEntity {
         if(Objects.nonNull(member.getProfileImg())) {
             this.profileImg = member.getProfileImg();
         }
-        if(Objects.nonNull(member.getGender())) {
-            this.gender = member.getGender();
-        }
-        if(member.getHeight() != 0) {
-            this.height = member.getHeight();
-        }
-        if(member.getWeight() != 0) {
-            this.weight = member.getWeight();
-        }
-        if(member.getAge() != 0) {
-            this.age = member.getAge();
+        if(Objects.nonNull(member.getBodyInfo())) {
+            this.bodyInfo = member.getBodyInfo();
         }
     }
 }

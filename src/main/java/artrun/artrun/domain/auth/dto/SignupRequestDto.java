@@ -1,6 +1,7 @@
 package artrun.artrun.domain.auth.dto;
 
 import artrun.artrun.domain.member.domain.Authority;
+import artrun.artrun.domain.member.domain.BodyInfo;
 import artrun.artrun.domain.member.domain.Gender;
 import artrun.artrun.domain.member.domain.Member;
 import lombok.*;
@@ -51,10 +52,12 @@ public class SignupRequestDto {
                 .password(passwordEncoder.encode(password))
                 .nickname(nickname)
                 .profileImg(getRandomProfileImg())
-                .gender(Gender.valueOf(gender))
-                .height(height)
-                .weight(weight)
-                .age(age)
+                .bodyInfo(BodyInfo.builder()
+                        .gender(Gender.valueOf(gender))
+                        .height(height)
+                        .weight(weight)
+                        .age(age)
+                        .build())
                 .authority(Authority.ROLE_USER)
                 .build();
     }
