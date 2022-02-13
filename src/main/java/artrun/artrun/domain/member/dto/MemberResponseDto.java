@@ -1,15 +1,10 @@
 package artrun.artrun.domain.member.dto;
 
 import artrun.artrun.domain.member.domain.Member;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Getter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberResponseDto {
     private String email;
     private String nickname;
@@ -19,15 +14,26 @@ public class MemberResponseDto {
     private short weight;
     private short age;
 
+    @Builder
+    public MemberResponseDto(String email, String nickname, String profileImg, String gender, short height, short weight, short age) {
+        this.email = email;
+        this.nickname = nickname;
+        this.profileImg = profileImg;
+        this.gender = gender;
+        this.height = height;
+        this.weight = weight;
+        this.age = age;
+    }
+
     public static MemberResponseDto of(Member member) {
         return MemberResponseDto.builder()
                 .email(member.getEmail())
                 .nickname(member.getNickname())
                 .profileImg(member.getProfileImg())
-                .gender(member.getGender().toString())
-                .height(member.getHeight())
-                .weight(member.getWeight())
-                .age(member.getAge())
+                .gender(member.getBodyInfo().getGender().toString())
+                .height(member.getBodyInfo().getHeight())
+                .weight(member.getBodyInfo().getWeight())
+                .age(member.getBodyInfo().getAge())
                 .build();
     }
 }

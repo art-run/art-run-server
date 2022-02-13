@@ -1,10 +1,7 @@
 package artrun.artrun.domain.member.domain;
 
 import artrun.artrun.domain.BaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -13,33 +10,31 @@ import java.util.Objects;
 @Table(name = "members")
 @Getter
 @Builder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Member extends BaseEntity {
     @Id
     @GeneratedValue
-    @Column(name = "member_id")
+    @Column(name = "member_id", updatable = false)
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Authority authority;
 
+    @Column(nullable = false, unique = true)
     private String nickname;
 
     private String profileImg;
 
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
-
-    private short height;
-
-    private short weight;
-
-    private short age;
+    @Embedded
+    private BodyInfo bodyInfo;
 
     public void update(Member member) {
         if(Objects.nonNull(member.getEmail())) {
@@ -51,17 +46,8 @@ public class Member extends BaseEntity {
         if(Objects.nonNull(member.getProfileImg())) {
             this.profileImg = member.getProfileImg();
         }
-        if(Objects.nonNull(member.getGender())) {
-            this.gender = member.getGender();
-        }
-        if(member.getHeight() != 0) {
-            this.height = member.getHeight();
-        }
-        if(member.getWeight() != 0) {
-            this.weight = member.getWeight();
-        }
-        if(member.getAge() != 0) {
-            this.age = member.getAge();
+        if(Objects.nonNull(member.getBodyInfo())) {
+            this.bodyInfo = member.getBodyInfo();
         }
     }
 }

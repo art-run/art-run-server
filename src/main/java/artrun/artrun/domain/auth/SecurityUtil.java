@@ -1,5 +1,6 @@
 package artrun.artrun.domain.auth;
 
+import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationServiceException;
@@ -7,7 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 @Slf4j
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SecurityUtil {
     public static Long getCurrentMemberId() {
         final Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

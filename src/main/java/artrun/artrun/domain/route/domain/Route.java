@@ -2,10 +2,7 @@ package artrun.artrun.domain.route.domain;
 
 import artrun.artrun.domain.BaseEntity;
 import artrun.artrun.domain.member.domain.Member;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.Type;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
@@ -16,15 +13,16 @@ import javax.persistence.*;
 @Table(name = "routes")
 @Getter
 @Builder
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class Route extends BaseEntity {
 
     @Id
     @GeneratedValue
-    @Column(name = "route_id")
+    @Column(name = "route_id", updatable = false)
     private Long id;
 
+    @Column(nullable = false)
     private Geometry targetRoute;
 
     private Geometry runRoute;

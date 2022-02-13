@@ -1,9 +1,6 @@
 package artrun.artrun.domain.auth.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -13,7 +10,7 @@ import javax.persistence.Table;
 @Getter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "refresh_tokens")
 @Entity
 public class RefreshToken {

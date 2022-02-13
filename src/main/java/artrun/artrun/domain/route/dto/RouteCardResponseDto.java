@@ -1,17 +1,14 @@
 package artrun.artrun.domain.route.dto;
 
 import artrun.artrun.domain.route.domain.Route;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Getter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class RouteCardResponseDto {
 
     private Long routeId;
