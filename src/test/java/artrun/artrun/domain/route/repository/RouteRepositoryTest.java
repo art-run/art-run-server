@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@EnabledIf(expression = "#{environment['spring.profiles.active'] == 'local'}", loadContext = true)
+@EnabledIf(expression = "#{environment.acceptsProfiles('test', 'local')}", loadContext = true)
 class RouteRepositoryTest {
 
     @TestConfiguration
