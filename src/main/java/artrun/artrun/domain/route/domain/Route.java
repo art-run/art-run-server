@@ -19,9 +19,10 @@ public class Route extends BaseEntity {
 
     @Id
     @GeneratedValue
-    @Column(name = "route_id")
+    @Column(name = "route_id", updatable = false)
     private Long id;
 
+    @Column(nullable = false)
     private Geometry targetRoute;
 
     private Geometry runRoute;

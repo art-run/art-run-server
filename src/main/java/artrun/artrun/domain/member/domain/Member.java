@@ -15,16 +15,20 @@ import java.util.Objects;
 public class Member extends BaseEntity {
     @Id
     @GeneratedValue
-    @Column(name = "member_id")
+    @Column(name = "member_id", updatable = false)
     private Long id;
 
+    @Column(nullable = false, unique = true)
     private String email;
 
+    @Column(nullable = false)
     private String password;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Authority authority;
 
+    @Column(nullable = false, unique = true)
     private String nickname;
 
     private String profileImg;
