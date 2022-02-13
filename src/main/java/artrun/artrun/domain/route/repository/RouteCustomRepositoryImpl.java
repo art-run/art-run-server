@@ -30,7 +30,6 @@ public class RouteCustomRepositoryImpl implements RouteCustomRepository {
 
         return jpaQueryFactory.selectFrom(route)
                 .innerJoin(route.member)
-                .fetchJoin()
                 .where(route.isPublic.eq(true))
                 .where(ltRouteId(lastRouteId))
                 .orderBy(route.id.desc())
@@ -44,7 +43,6 @@ public class RouteCustomRepositoryImpl implements RouteCustomRepository {
 
         return jpaQueryFactory.selectFrom(route)
                 .innerJoin(route.member)
-                .fetchJoin()
                 .where(route.member.id.eq(memberId))
                 .where(ltRouteId(lastRouteId))
                 .orderBy(route.id.desc())
