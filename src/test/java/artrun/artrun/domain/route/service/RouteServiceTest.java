@@ -18,16 +18,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class RouteRunServiceTest {
+class RouteServiceTest {
 
     @InjectMocks
-    RouteRunService routeRunService;
+    RouteService routeService;
 
     @Mock
     RouteRepository routeRepository;
@@ -58,7 +58,7 @@ class RouteRunServiceTest {
         RouteStartRequestDto routeStartRequestDto = RouteStartRequestDto.builder().memberId(member.getId()).wktTargetRoute(String.valueOf(targetRoute)).build();
 
         // when
-        RouteStartResponseDto routeResponseDto = routeRunService.start(routeStartRequestDto);
+        RouteStartResponseDto routeResponseDto = routeService.startRoute(routeStartRequestDto);
 
         // then
         Route savedRoute = routeRepository.getById(routeResponseDto.getRouteId());
@@ -95,11 +95,43 @@ class RouteRunServiceTest {
         given(routeRepository.getByIdAndMemberId(any(), any())).willReturn(route);
 
         //when
-        RouteFinishResponseDto routeFinishResponseDto = routeRunService.finish(routeFinishRequestDto);
+        RouteFinishResponseDto routeFinishResponseDto = routeService.finishRoute(routeFinishRequestDto);
 
         //then
         Route savedRoute = routeRepository.getByIdAndMemberId(routeFinishResponseDto.getRouteId(), routeFinishRequestDto.getMemberId());
         assertThat(savedRoute.getRunRoute().toString().equals(wktRunRoute));
         assertThat(savedRoute.getTitle().equals(title));
+    }
+
+    @Test
+    @DisplayName("유저가 경로 아이디를 이용해 본인의 경로를 삭제한다.")
+    void deleteRoute() {
+        // given
+        Long memberId = 1L;
+        Long routeId = 1L;
+        Route route = Route.builder()
+                .id(1L)
+                .member(Member
+                        .builder()
+                        .id(memberId)
+                        .build()
+                )
+                .targetRoute(wktToGeometry.wktToGeometry("LINESTRING (29 11, 11 31, 42 41)"))
+                .runRoute(wktToGeometry.wktToGeometry("LINESTRING (29 11, 11 31, 42 41)"))
+                .title("title")
+                .distance(1235)
+                .time(295)
+                .kcal(64)
+                .color("B00020")
+                .thickness((byte) 3)
+                .isPublic(Boolean.TRUE)
+                .build();
+
+        // when
+        when(routeRepository.getById(any())).thenReturn(route);
+        when(SecurityUtil.getCurrentMemberId()).thenReturn(memberId);
+
+        // then
+        routeService.deleteRoute(routeId);
     }
 }

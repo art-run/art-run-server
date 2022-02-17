@@ -55,4 +55,8 @@ public class Route extends BaseEntity {
         this.thickness = route.thickness;
         this.isPublic = route.isPublic;
     }
+
+    public Boolean isOwnedBy(Long memberId) {
+        return this.member.getId() == memberId;
+    }
 }

@@ -4,7 +4,7 @@ import artrun.artrun.domain.BaseTestController;
 import artrun.artrun.domain.route.dto.*;
 import artrun.artrun.domain.route.repository.RouteRepository;
 import artrun.artrun.domain.route.service.RouteFindService;
-import artrun.artrun.domain.route.service.RouteRunService;
+import artrun.artrun.domain.route.service.RouteService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ class RouteControllerTest extends BaseTestController {
     MockMvc mockMvc;
 
     @MockBean
-    RouteRunService routeRunService;
+    RouteService routeService;
 
     @MockBean
     RouteFindService routeFindService;
@@ -66,7 +66,7 @@ class RouteControllerTest extends BaseTestController {
 
         // when
         RouteStartResponseDto routeStartResponseDto = new RouteStartResponseDto(3L);
-        when(routeRunService.start(any())).thenReturn(routeStartResponseDto);
+        when(routeService.startRoute(any())).thenReturn(routeStartResponseDto);
 
         // then
         String requestBody = objectMapper.writeValueAsString(routeStartRequestDto);
@@ -98,7 +98,7 @@ class RouteControllerTest extends BaseTestController {
 
         // when
         RouteFinishResponseDto routeFinishResponseDto = new RouteFinishResponseDto(1L);
-        when(routeRunService.finish(any())).thenReturn(routeFinishResponseDto);
+        when(routeService.finishRoute(any())).thenReturn(routeFinishResponseDto);
 
         // then
         String requestBody = objectMapper.writeValueAsString(routeFinishRequestDto);
