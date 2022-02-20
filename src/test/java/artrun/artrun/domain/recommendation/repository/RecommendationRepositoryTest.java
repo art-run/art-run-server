@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.domain.Pageable;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -63,7 +64,7 @@ class RecommendationRepositoryTest {
         recommendationRepository.saveAll(recommendationList);
 
         // when
-        List<Recommendation> resultRecommendations = recommendationRepository.getRecommendationsByDistance(distance, null);
+        List<Recommendation> resultRecommendations = recommendationRepository.getRecommendationsByDistance(distance, Pageable.ofSize(5));
 
         // then
         assertThat(resultRecommendations).hasSize(5);
