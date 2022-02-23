@@ -3,21 +3,28 @@ package artrun.artrun.domain.recommendation.service;
 import artrun.artrun.domain.recommendation.domain.Recommendation;
 import artrun.artrun.domain.recommendation.dto.RecommendationResponseDto;
 import artrun.artrun.domain.recommendation.repository.RecommendationRepository;
-import lombok.RequiredArgsConstructor;
-import org.locationtech.jts.geom.Coordinate;
+import artrun.artrun.global.util.requester.OsrmRequester;
+import org.locationtech.jts.geom.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
 public class RecommendationService {
 
     private final RecommendationRepository recommendationRepository;
+
+    private final OsrmRequester osrmRequester;
+
+    public RecommendationService(RecommendationRepository recommendationRepository, OsrmRequester osrmRequester) {
+        this.recommendationRepository = recommendationRepository;
+        this.osrmRequester = osrmRequester;
+    }
 
     @Transactional(readOnly = true)
     public List<RecommendationResponseDto> getRecommendationsByDistance(int distance, Pageable pageable) {
@@ -35,13 +42,21 @@ public class RecommendationService {
         double latOffset = lat - recommendation.getRoute().getCentroid().getCoordinate().y;
         double lngOffset = lng - recommendation.getRoute().getCentroid().getCoordinate().x;
 
+        ArrayList<Coordinate> coordinateArrayList = new ArrayList<>();
         for(Coordinate coordinate : recommendation.getRoute().getCoordinates()) {
-            coordinate.setX(coordinate.getX() + lngOffset);
-            coordinate.setY(coordinate.getY() + latOffset);
+            coordinateArrayList.add(new Coordinate(coordinate.getX() + lngOffset, coordinate.getY() + latOffset));
         }
+        Coordinate[] coordinates = coordinateArrayList.toArray(Coordinate[]::new);
+        Geometry geometry = new GeometryFactory().createLineString(coordinates);
 
-        // TODO apply OSRM nearest
+        // 2. OSRM API 기반 맵 매칭
+        Geometry matchedRoute = osrmRequester.match(geometry);
 
-        return RecommendationResponseDto.of(recommendation);
+        return RecommendationResponseDto.builder()
+                .id(recommendation.getId())
+                .wktRoute(matchedRoute.toString())
+                .title(recommendation.getTitle())
+                .distance(recommendation.getDistance())
+                .build();
     }
 }
