@@ -50,7 +50,7 @@ public class RecommendationService {
         Geometry geometry = new GeometryFactory().createLineString(coordinates);
 
         // 2. OSRM API 기반 맵 매칭
-        Geometry matchedRoute = osrmRequester.match(geometry);
+        Geometry matchedRoute = osrmRequester.requestMatch(geometry);
 
         return RecommendationResponseDto.builder()
                 .id(recommendation.getId())
