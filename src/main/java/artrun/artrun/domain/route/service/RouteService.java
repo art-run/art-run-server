@@ -34,7 +34,7 @@ public class RouteService {
         Route route = routeRepository.getByIdAndMemberId(routeFinishRequestDto.getRouteId(), routeFinishRequestDto.getMemberId());
         route.updateAtFinish(routeFinishRequestDto.toRoute());
 
-        return RouteFinishResponseDto.of(routeRepository.save(route));
+        return RouteFinishResponseDto.of(route);
     }
 
     public void deleteRoute(Long routeId) {

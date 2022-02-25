@@ -28,7 +28,6 @@ public class MemberService {
         SecurityUtil.isAuthorizedByMemberId(memberId);
         Member member = memberRepository.getById(memberId);
         member.update(SaveMemberRequestDto.toMember(saveMemberRequestDto));
-        Member savedMember = memberRepository.save(member);
-        return MemberResponseDto.of(savedMember);
+        return MemberResponseDto.of(member);
     }
 }

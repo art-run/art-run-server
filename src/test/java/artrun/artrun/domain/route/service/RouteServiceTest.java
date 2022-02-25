@@ -91,7 +91,6 @@ class RouteServiceTest {
                 .member(member)
                 .targetRoute(wktToGeometry.wktToGeometry("LINESTRING (29 11, 11 31, 42 41)"))
                 .build();
-        given(routeRepository.save(any())).willReturn(route);
         given(routeRepository.getByIdAndMemberId(any(), any())).willReturn(route);
 
         //when
