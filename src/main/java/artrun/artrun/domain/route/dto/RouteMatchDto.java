@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class RouteMatchRequestDto {
+public class RouteMatchDto {
 
     private Long routeId;
     private Double lat;
