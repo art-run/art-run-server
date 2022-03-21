@@ -1,29 +1,27 @@
 package artrun.artrun.global.util.kafka;
 
 import artrun.artrun.domain.route.dto.RouteMatchDto;
-import artrun.artrun.domain.route.service.RouteService;
+import artrun.artrun.global.util.redis.RedisPublisher;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class Receiver {
+public class KafkaReceiver {
 
-    private final RouteService routeService;
-
-    private final SimpMessagingTemplate messagingTemplate;
+    private final RedisPublisher redisPublisher;
 
     @KafkaListener(id="main-listener", topics = "mapmatch")
     public void receiveMapMatch(String message) throws JsonProcessingException {
+        log.info("Kafka to Server listen: " + message);
         RouteMatchDto routeMatchDto = new ObjectMapper().readValue(message, RouteMatchDto.class);
-        RouteMatchDto snappedRouteMatchDto = routeService.snapToTargetRoute(routeMatchDto);
-        log.info("Kafka listen: " + snappedRouteMatchDto.toString());
-        messagingTemplate.convertAndSend("/sub/match/" + snappedRouteMatchDto.getRouteId(), snappedRouteMatchDto);
+        ChannelTopic channelTopic = ChannelTopic.of("match:" + routeMatchDto.getRouteId());
+        redisPublisher.publish(channelTopic, message);
     }
 }
