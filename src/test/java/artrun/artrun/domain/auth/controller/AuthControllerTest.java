@@ -143,7 +143,7 @@ class AuthControllerTest extends BaseTestController {
 
         // when
         TokenResponseDto tokenDto = TokenResponseDto.builder()
-                .grantType("bearer")
+                .grantType("Bearer")
                 .accessToken("testAccessToken")
                 .refreshToken("testRefreshToken")
                 .accessTokenExpiresIn(1643557355750L)
