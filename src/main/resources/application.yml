@@ -44,3 +44,6 @@ spring:
   jpa:
     properties:
       hibernate.hbm2ddl.auto: update
+  redis:
+    host: 10.76.2.16
+    port: 6379
