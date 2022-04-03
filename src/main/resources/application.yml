@@ -25,6 +25,13 @@ spring:
     properties:
       hibernate.hbm2ddl.auto: update
     show-sql: true
+  redis:
+    host: localhost
+    port: 6379
+  kafka:
+    bootstrap-servers: 127.0.0.1:9092
+    consumer:
+      group-id: map-matching-group
 ---
 spring:
   config:
@@ -37,3 +44,10 @@ spring:
   jpa:
     properties:
       hibernate.hbm2ddl.auto: update
+  redis:
+    host: 10.76.2.16
+    port: 6379
+  kafka:
+    bootstrap-servers: 10.80.10.5:9092
+    consumer:
+      group-id: map-matching-group

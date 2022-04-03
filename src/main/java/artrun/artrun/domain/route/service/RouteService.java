@@ -3,12 +3,12 @@ package artrun.artrun.domain.route.service;
 import artrun.artrun.domain.auth.SecurityUtil;
 import artrun.artrun.domain.auth.exception.AuthorizationException;
 import artrun.artrun.domain.route.domain.Route;
-import artrun.artrun.domain.route.dto.RouteFinishRequestDto;
-import artrun.artrun.domain.route.dto.RouteFinishResponseDto;
-import artrun.artrun.domain.route.dto.RouteStartResponseDto;
-import artrun.artrun.domain.route.dto.RouteStartRequestDto;
+import artrun.artrun.domain.route.dto.*;
 import artrun.artrun.domain.route.repository.RouteRepository;
 import lombok.RequiredArgsConstructor;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.LineString;
+import org.locationtech.jts.operation.overlay.snap.LineStringSnapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,5 +43,17 @@ public class RouteService {
             throw new AuthorizationException("해당 경로 작성자와 일치하지 않는 memberId입니다.", UNAUTHORIZED);
         }
         routeRepository.delete(route);
+    }
+
+    public RouteMatchDto snapToTargetRoute(RouteMatchDto routeMatchDto) {
+        Route route = routeRepository.getById(routeMatchDto.getRouteId());
+
+        LineStringSnapper lineStringSnapper = new LineStringSnapper((LineString)route.getTargetRoute(), 0.05);
+        Coordinate coordinate = new Coordinate(routeMatchDto.getLng(), routeMatchDto.getLat());
+        Coordinate snappedCoordinate = lineStringSnapper.snapTo(new Coordinate[]{coordinate})[0];
+        routeMatchDto.setLng(snappedCoordinate.getX());
+        routeMatchDto.setLat(snappedCoordinate.getY());
+
+        return routeMatchDto;
     }
 }

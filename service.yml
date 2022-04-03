@@ -4,6 +4,7 @@ metadata:
   name: art-run-service
 spec:
   type: LoadBalancer
+  sessionAffinity: ClientIP
   ports:
     - port: 80
       targetPort: 8080
