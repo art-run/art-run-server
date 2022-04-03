@@ -17,7 +17,7 @@ public class KafkaReceiver {
 
     private final RedisPublisher redisPublisher;
 
-    @KafkaListener(id="main-listener", topics = "match/res")
+    @KafkaListener(id="main-listener", topics = "match.res")
     public void receiveMapMatch(String message) throws JsonProcessingException {
         log.info("Kafka to Server listen: " + message);
         RouteMatchDto routeMatchDto = new ObjectMapper().readValue(message, RouteMatchDto.class);

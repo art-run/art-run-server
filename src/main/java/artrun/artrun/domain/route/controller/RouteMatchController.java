@@ -34,6 +34,6 @@ public class RouteMatchController {
 
     @MessageMapping("/match/send")
     public void send(RouteMatchDto routeMatchDto) throws JsonProcessingException {
-        kafkaSender.send("match/req", new ObjectMapper().writeValueAsString(routeMatchDto));
+        kafkaSender.send("match.req", new ObjectMapper().writeValueAsString(routeMatchDto));
     }
 }
