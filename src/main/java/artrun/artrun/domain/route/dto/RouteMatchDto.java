@@ -9,7 +9,7 @@ import org.locationtech.jts.geom.LineString;
 public class RouteMatchDto {
 
     private Long routeId;
-    private LineString targetRoute;
+    private String wktTargetRoute;
     private Double lat;
     private Double lng;
 
@@ -17,7 +17,7 @@ public class RouteMatchDto {
     public String toString() {
         return "RouteMatchDto{" +
                 "routeId=" + routeId +
-                ", targetRoute=" + targetRoute +
+                ", wktTargetRoute='" + wktTargetRoute + '\'' +
                 ", lat=" + lat +
                 ", lng=" + lng +
                 '}';
