@@ -47,3 +47,7 @@ spring:
   redis:
     host: 10.76.2.16
     port: 6379
+  kafka:
+    bootstrap-servers: 10.80.10.5:9092
+    consumer:
+      group-id: map-matching-group
