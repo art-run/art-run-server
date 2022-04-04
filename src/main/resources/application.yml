@@ -45,8 +45,9 @@ spring:
     properties:
       hibernate.hbm2ddl.auto: update
   redis:
-    host: 10.80.7.223
+    host: 10.80.4.242
     port: 6379
+    password: ENC(8bHbelf4V+WVxs6wr3IyEg==)
   kafka:
     bootstrap-servers: 10.80.10.5:9092
     consumer:
