@@ -47,7 +47,6 @@ spring:
   redis:
     host: 10.80.2.197
     port: 6379
-    password: ENC(fR/YWhmdXJTPTH3YpHL+0r/BqxcLXrwH)
   kafka:
     bootstrap-servers: 10.80.10.5:9092
     consumer:
