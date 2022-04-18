@@ -2,6 +2,7 @@ package artrun.artrun.domain.route.service;
 
 import artrun.artrun.domain.auth.SecurityUtil;
 import artrun.artrun.domain.auth.exception.AuthorizationException;
+import artrun.artrun.domain.recommendation.repository.RecommendationRepository;
 import artrun.artrun.domain.route.domain.Route;
 import artrun.artrun.domain.route.dto.*;
 import artrun.artrun.domain.route.repository.RouteRepository;
@@ -21,6 +22,8 @@ public class RouteService {
 
     private final RouteRepository routeRepository;
 
+    private final RecommendationRepository recommendationRepository;
+
     public RouteStartResponseDto startRoute(RouteStartRequestDto routeStartRequestDto) {
         SecurityUtil.isAuthorizedByMemberId(routeStartRequestDto.getMemberId());
 
@@ -30,6 +33,9 @@ public class RouteService {
 
     public RouteFinishResponseDto finishRoute(RouteFinishRequestDto routeFinishRequestDto) {
         SecurityUtil.isAuthorizedByMemberId(routeFinishRequestDto.getMemberId());
+
+        // TODO worker 에 작업 위임
+        recommendationRepository.save(routeFinishRequestDto.toRecommendation());
 
         Route route = routeRepository.getByIdAndMemberId(routeFinishRequestDto.getRouteId(), routeFinishRequestDto.getMemberId());
         route.updateAtFinish(routeFinishRequestDto.toRoute());

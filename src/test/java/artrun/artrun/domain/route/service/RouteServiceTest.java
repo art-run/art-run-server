@@ -2,6 +2,7 @@ package artrun.artrun.domain.route.service;
 
 import artrun.artrun.domain.auth.SecurityUtil;
 import artrun.artrun.domain.member.domain.Member;
+import artrun.artrun.domain.recommendation.repository.RecommendationRepository;
 import artrun.artrun.domain.route.domain.Route;
 import artrun.artrun.domain.route.dto.RouteFinishRequestDto;
 import artrun.artrun.domain.route.dto.RouteFinishResponseDto;
@@ -31,6 +32,9 @@ class RouteServiceTest {
 
     @Mock
     RouteRepository routeRepository;
+
+    @Mock
+    RecommendationRepository recommendationRepository;
 
     private Member member = Member.builder()
             .id(1L)

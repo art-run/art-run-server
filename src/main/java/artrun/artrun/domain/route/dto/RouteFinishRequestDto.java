@@ -1,5 +1,6 @@
 package artrun.artrun.domain.route.dto;
 
+import artrun.artrun.domain.recommendation.domain.Recommendation;
 import artrun.artrun.domain.route.domain.Route;
 import artrun.artrun.global.util.wktToGeometry;
 import lombok.*;
@@ -52,6 +53,15 @@ public class RouteFinishRequestDto {
                 .color(color)
                 .thickness(thickness)
                 .isPublic(isPublic)
+                .build();
+    }
+
+    public Recommendation toRecommendation() {
+        return Recommendation.builder()
+                .route(wktToGeometry.wktToGeometry(wktRunRoute))
+                .title(title)
+                .distance(distance)
+                .usedCount(0L)
                 .build();
     }
 }
