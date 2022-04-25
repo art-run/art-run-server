@@ -52,3 +52,33 @@ User
 3. GKE Kubernetes cluster에 의해 관리되는 코어 서버로 요청이 전달됩니다.
 4. 코어 서버는 Cloud SQL 데이터베이스에 접근하여 정보를 가져옵니다.
 5. 중간에 Kafka Instance를 통해서 분산 큐잉 처리가 가능합니다.
+
+### 🗺  맵매칭 기능
+
+![image](https://user-images.githubusercontent.com/20726714/165111910-40f3decb-c32f-4339-9fac-ee9accc165ce.png)
+
+맵매칭 시퀀스 다이어그램
+
+1. 달리기 시작 단계에서 최초 1번 socket 연결과 해당 routeId에 대한 redis 구독을 한다.
+2. GPS 보정 요청을 socket을 통해 전송한다. socket은 메시지를 받으면 kafka `match.req` 토픽에 전송한다.
+    
+    워커에서는 `match.req` 토픽에서 메시지를 consume하여 GPS 값을 보정한 뒤, 워커에서 `match.res` 토픽으로 전송한다.
+    
+3. 서버는 Kafka  `match.res` 토픽을 구독하고 있다가, 메시지가 오면 consume 한 뒤 routeId의 redis 토픽에 메시지를 그대로 전송한다.
+    
+    redis는 구독하고 있는 서버(1번에서 구독한 서버)에 보정값을 전송하고, 해당 서버는 socket으로 클라이언트에게 결과를 전달한다.
+    
+
+![image](https://user-images.githubusercontent.com/20726714/165111936-836b0b8a-7a4d-4758-94fd-d79032da304e.png)
+
+맵매칭 기능 아키텍처 다이어그램
+
+[검정색] Client들은 Load Balancing 되어 Sticky하게 각각의 서버에 붙어있다.
+
+[보라색] 웹소켓을 통해 전송된 요청은 Kafka를 거쳐서 워커에 (하나의 컨슈머 그룹) 도착한다. 
+
+[노란색] 워커에서는 보정 처리를 하여 Kafka로 전송한다. 서버는 (하나의 컨슈머 그룹) Kafka를 통해 보정값을 받는다. 이 때, 보정값을 받는 서버는 알 수 없다. (이를 해결하기 위해 redis가 있다.)
+
+[빨간색] 서버는 redis의 routeId 토픽에 메시지를 그대로 전송한다. 그러면 이를 구독하고 있던 서버에서 읽을 수 있다.
+
+[검정색] 받은 결과를 다시 클라이언트에 돌려준다.
