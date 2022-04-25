@@ -26,7 +26,7 @@ public class OsrmRequester {
     public Geometry requestMatch(Geometry geometry) {
         try {
             log.info("requestMatch - origin: " + geometry.toString());
-            String positions = PolylineUtils.encode(Arrays.stream(geometry.getCoordinates()).map(c -> Position.fromLngLat(c.getX(), c.getY())).collect(Collectors.toList()), 5);
+            String positions = PolylineUtils.encode(Arrays.stream(geometry.getCoordinates()).map(c -> Position.fromLngLat(c.getY(), c.getX())).collect(Collectors.toList()), 5);
 
             String jsonResult = receiveMatchResponse(positions);
 
@@ -38,7 +38,7 @@ public class OsrmRequester {
 
             ArrayList<Coordinate> coordinateArrayList = new ArrayList<>();
             for (Position position : matchedPositions) {
-                coordinateArrayList.add(new Coordinate(position.getLongitude(), position.getLatitude()));
+                coordinateArrayList.add(new Coordinate(position.getLatitude(), position.getLongitude()));
             }
             Coordinate[] coordinates = coordinateArrayList.toArray(Coordinate[]::new);
 
