@@ -10,6 +10,7 @@ import artrun.artrun.domain.route.dto.RouteStartResponseDto;
 import artrun.artrun.domain.route.dto.RouteStartRequestDto;
 import artrun.artrun.domain.route.repository.RouteRepository;
 import artrun.artrun.global.util.wktToGeometry;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,6 +18,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.locationtech.jts.geom.LineString;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -36,6 +38,8 @@ class RouteServiceTest {
     @Mock
     RecommendationRepository recommendationRepository;
 
+    private static MockedStatic<SecurityUtil> securityUtilMockedStatic;
+
     private Member member = Member.builder()
             .id(1L)
             .nickname("runnerA")
@@ -43,8 +47,12 @@ class RouteServiceTest {
 
     @BeforeAll
     static void setup() {
-        mockStatic(SecurityUtil.class);
-        given(SecurityUtil.isAuthorizedByMemberId(any())).willReturn(true);
+        securityUtilMockedStatic = mockStatic(SecurityUtil.class);
+    }
+
+    @AfterAll
+    public static void afterAll() {
+        securityUtilMockedStatic.close();
     }
 
     @Test
