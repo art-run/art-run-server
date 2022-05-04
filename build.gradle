@@ -164,3 +164,7 @@ configurations {
 compileQuerydsl {
     options.annotationProcessorPath = configurations.querydsl
 }
+
+clean {
+    delete file(querydslDir)
+}
