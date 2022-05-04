@@ -39,12 +39,12 @@ public class RecommendationService {
         Recommendation recommendation = recommendationRepository.getById(recommendationId);
 
         // 1. centerPosition과 centroid의 차이만큼 평행이동
-        double latOffset = lat - recommendation.getRoute().getCentroid().getCoordinate().x;
-        double lngOffset = lng - recommendation.getRoute().getCentroid().getCoordinate().y;
+        double lngOffset = lng - recommendation.getRoute().getCentroid().getCoordinate().x;
+        double latOffset = lat - recommendation.getRoute().getCentroid().getCoordinate().y;
 
         ArrayList<Coordinate> coordinateArrayList = new ArrayList<>();
         for(Coordinate coordinate : recommendation.getRoute().getCoordinates()) {
-            coordinateArrayList.add(new Coordinate(coordinate.getX() + latOffset, coordinate.getY() + lngOffset));
+            coordinateArrayList.add(new Coordinate(coordinate.getX() + lngOffset, coordinate.getY() + latOffset));
         }
         Coordinate[] coordinates = coordinateArrayList.toArray(Coordinate[]::new);
         Geometry geometry = new GeometryFactory().createLineString(coordinates);
