@@ -4,6 +4,7 @@ import artrun.artrun.domain.member.domain.Member;
 import artrun.artrun.domain.route.domain.Route;
 import artrun.artrun.global.util.wktToGeometry;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.locationtech.jts.geom.Geometry;
@@ -22,7 +23,7 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 // TODO CI/CD 에서 테스트할 수 있도록 수정
-@DisabledIf(expression = "#{environment.acceptsProfiles('dev')}", loadContext = true)
+@Disabled
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class RouteRepositoryTest {

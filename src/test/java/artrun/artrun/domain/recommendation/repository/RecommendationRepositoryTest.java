@@ -3,6 +3,7 @@ package artrun.artrun.domain.recommendation.repository;
 import artrun.artrun.domain.recommendation.domain.Recommendation;
 import artrun.artrun.global.util.wktToGeometry;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
@@ -25,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 // TODO CI/CD 에서 테스트할 수 있도록 수정
-@DisabledIf(expression = "#{environment.acceptsProfiles('dev')}", loadContext = true)
+@Disabled
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 class RecommendationRepositoryTest {
