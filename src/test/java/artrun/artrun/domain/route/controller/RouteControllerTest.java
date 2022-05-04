@@ -46,6 +46,34 @@ class RouteControllerTest extends BaseTestController {
     RouteRepository routeRepository;
 
     @Test
+    @DisplayName("경로의 아이디를 조회할 때, RouteReseponseDto를 반환한다.")
+    void getOne() throws Exception {
+        // given
+
+        // when
+        RouteResponseDto routeResponseDto = RouteResponseDto.builder()
+                .wktRunRoute("LINESTRING (29 11, 11 31, 42 41)")
+                .title("heart")
+                .distance(1235)
+                .time(295)
+                .speed(15.07f)
+                .kcal(64)
+                .color("000000")
+                .isPublic(Boolean.TRUE)
+                .createdAt(LocalDateTime.now())
+                .build();
+        when(routeFindService.get(any())).thenReturn(routeResponseDto);
+
+        // then
+        mockMvc.perform(get("/route/100")
+                        .with(csrf()))
+                .andDo(print())
+                .andExpect(jsonPath("$.wktRunRoute").value(routeResponseDto.getWktRunRoute()))
+                .andExpect(jsonPath("$.title").value(routeResponseDto.getTitle()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     @DisplayName("경로의 아이디를 조회할 때, 경로의 아이디가 없으면 ENTITY_NOT_FOUND 예외를 반환한다.")
     void getRouteNotfound() throws Exception {
         // given
