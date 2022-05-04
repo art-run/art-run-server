@@ -46,9 +46,10 @@ jobs:
         java-version: '11'
         distribution: 'adopt'
     - name: Setup MySQL 
-      uses: samin/mysql-action@v1 
+      uses: samin/mysql-action@v1
       with: 
         character set server: 'utf8' 
+        mysql version: '8.0'
         mysql database: 'art-run' 
         mysql user: 'root' 
         mysql password: ''
