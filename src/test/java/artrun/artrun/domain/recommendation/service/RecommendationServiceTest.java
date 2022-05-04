@@ -3,6 +3,7 @@ package artrun.artrun.domain.recommendation.service;
 import artrun.artrun.domain.recommendation.domain.Recommendation;
 import artrun.artrun.domain.recommendation.dto.RecommendationResponseDto;
 import artrun.artrun.domain.recommendation.repository.RecommendationRepository;
+import artrun.artrun.global.util.requester.OsrmRequester;
 import artrun.artrun.global.util.wktToGeometry;
 import org.assertj.core.data.Percentage;
 import org.junit.jupiter.api.DisplayName;
@@ -14,13 +15,16 @@ import org.locationtech.jts.geom.GeometryFactory;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Pageable;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -31,6 +35,35 @@ class RecommendationServiceTest {
 
     @Mock
     RecommendationRepository recommendationRepository;
+
+    @Mock
+    OsrmRequester osrmRequester;
+
+    @DisplayName("추천 경로들 조회: List<RecommendationResponseDto> 반환")
+    @Test
+    void getRecommendationsByDistance() {
+        // given
+        int distance = 3000;
+        Pageable pageable = Pageable.ofSize(1);
+
+        // when
+        Geometry route = wktToGeometry.wktToGeometry("LINESTRING (30 10, 10 30, 40 40)");
+        List<Recommendation> recommendationList = new ArrayList<>();
+        for(int i =1; i<= 5; i++) {
+            recommendationList.add(Recommendation.builder()
+                    .id((long) i)
+                    .route(route)
+                    .distance(100 * i)
+                    .title("title" + i)
+                    .usedCount((long) i)
+                    .build());
+        }
+        when(recommendationRepository.getRecommendationsByDistance(anyInt(), any())).thenReturn(recommendationList);
+
+        // then
+        assertThat(recommendationService.getRecommendationsByDistance(distance, pageable).get(0)).isInstanceOf(RecommendationResponseDto.class);
+        assertThat(recommendationService.getRecommendationsByDistance(distance, pageable).get(0).getTitle()).isEqualTo(recommendationList.get(0).getTitle());
+    }
 
     @DisplayName("centerPosition과 centroid의 차이만큼 평행이동한다.")
     @Test
@@ -49,22 +82,13 @@ class RecommendationServiceTest {
         double lng = 126.98495686769316;
 
         // when
-        double latOffset = lat - recommendation.getRoute().getCentroid().getCoordinate().y;
-        double lngOffset = lng - recommendation.getRoute().getCentroid().getCoordinate().x;
-
-        ArrayList<Coordinate> coordinateArrayList = new ArrayList<>();
-        for(Coordinate coordinate : recommendation.getRoute().getCoordinates()) {
-            coordinateArrayList.add(new Coordinate(coordinate.getX() + lngOffset, coordinate.getY() + latOffset));
-        }
-        Coordinate[] coordinates = coordinateArrayList.toArray(Coordinate[]::new);
-        Geometry modifiedRoute = new GeometryFactory().createLineString(coordinates);
+        when(recommendationRepository.getById(any())).thenReturn(recommendation);
+        Geometry adjustedRoute = wktToGeometry.wktToGeometry("LINESTRING (126.98487040555975 37.557091611092346, 126.98446270978948 37.557314375835205, 126.98424813306829 37.557657089549586, 126.98375460660955 37.55746859719789, 126.98319670713445 37.556937388964876, 126.98388335264227 37.556508992524805, 126.98420521772405 37.55601204962995, 126.98478457487127 37.55589209741003, 126.98540684736273 37.55553223961469, 126.98575017011663 37.5563204973264, 126.98609349287054 37.55717728991686, 126.98626515424749 37.55817115722424, 126.98568579710027 37.558188292753535, 126.98551413572332 37.55752000424925, 126.98510643995306 37.557160154159675)");
+        when(osrmRequester.requestMatch(any())).thenReturn(adjustedRoute);
 
         // then
+        assertThat(recommendationService.adjustRecommendationToCenter(recommendation.getId(), lat, lng).getTitle()).isEqualTo(recommendation.getTitle());
+        assertThat(recommendationService.adjustRecommendationToCenter(recommendation.getId(), lat, lng).getWktRoute()).isEqualTo(adjustedRoute.toString());
 
-        assertThat(modifiedRoute.toString()).isNotEqualTo(route.toString());
-        assertThat(modifiedRoute.getCoordinate().getX()).isEqualTo(route.getCoordinate().getX()+(lng-route.getCentroid().getX()));
-        assertThat(modifiedRoute.getCoordinate().getY()).isEqualTo(route.getCoordinate().getY()+(lat-route.getCentroid().getY()));
-        assertThat(modifiedRoute.getCentroid().getX()).isCloseTo(lng, Percentage.withPercentage(0.00001));
-        assertThat(modifiedRoute.getCentroid().getY()).isCloseTo(lat, Percentage.withPercentage(0.00001));
     }
 }
