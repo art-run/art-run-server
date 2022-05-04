@@ -38,7 +38,8 @@ jacocoTestReport {
                             "**/*Response*",
                             "**/*Interceptor*",
                             "**/*Exception*",
-                            "**/global/util/**"
+                            "**/global/util/**",
+                            "**/domain/auth/**"
                     ] + Qdomains)
                 })
         )
@@ -60,7 +61,7 @@ jacocoTestCoverageVerification {
             limit {
                 counter = 'LINE'
                 value = 'COVEREDRATIO'
-                minimum = 0.30
+                minimum = 0.60
             }
 
             excludes = [
@@ -71,7 +72,8 @@ jacocoTestCoverageVerification {
                     "**.*Response*",
                     "**.*Interceptor*",
                     "**.*Exception*",
-                    "**.global.util.*"
+                    "**.global.util.*",
+                    "**.domain.auth.*"
             ] + Qdomains // 제외할 Qdomains 패턴 추가
         }
     }
