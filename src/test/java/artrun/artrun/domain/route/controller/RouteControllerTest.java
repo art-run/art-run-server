@@ -1,6 +1,7 @@
 package artrun.artrun.domain.route.controller;
 
 import artrun.artrun.domain.BaseTestController;
+import artrun.artrun.domain.route.domain.Route;
 import artrun.artrun.domain.route.dto.*;
 import artrun.artrun.domain.route.repository.RouteRepository;
 import artrun.artrun.domain.route.service.RouteFindService;
@@ -15,7 +16,12 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import javax.persistence.EntityNotFoundException;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -41,7 +47,7 @@ class RouteControllerTest extends BaseTestController {
 
     @Test
     @DisplayName("경로의 아이디를 조회할 때, 경로의 아이디가 없으면 ENTITY_NOT_FOUND 예외를 반환한다.")
-    void getRouteNotfound() throws Exception{
+    void getRouteNotfound() throws Exception {
         // given
 
         // when
@@ -108,6 +114,66 @@ class RouteControllerTest extends BaseTestController {
                         .with(csrf()))
                 .andDo(print())
                 .andExpect(jsonPath("routeId").value(routeFinishRequestDto.getRouteId()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("소셜 - 최신기록: List<RouteCardResponseDto> 반환")
+    void getRoutes() throws Exception {
+        // given
+
+        // when
+        List<RouteCardResponseDto> routeCardResponseDtos = new ArrayList<>();
+        for (int i = 1; i <= 5; i++) {
+            routeCardResponseDtos.add(
+                    RouteCardResponseDto.builder()
+                    .routeId((long) i)
+                    .nickname("lolo")
+                    .profileImg("")
+                    .title("title" + i)
+                    .distance(1000)
+                    .createdAt(LocalDateTime.now())
+                    .wktRunRoute("LINESTRING (29 11, 11 31, 42 41)")
+                    .build());
+        }
+        when(routeFindService.getPublicRoutes(any())).thenReturn(routeCardResponseDtos);
+
+        // then
+        mockMvc.perform(get("/routes")
+                        .with(csrf()))
+                .andDo(print())
+                .andExpect(jsonPath("$[0].title").value(routeCardResponseDtos.get(0).getTitle()))
+                .andExpect(jsonPath("$[0].routeId").value(routeCardResponseDtos.get(0).getRouteId()))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @DisplayName("소셜 - 내 기록: List<RouteCardResponseDto> 반환")
+    void getMyRoutes() throws Exception {
+        // given
+
+        // when
+        List<RouteCardResponseDto> routeCardResponseDtos = new ArrayList<>();
+        for (int i = 1; i <= 5; i++) {
+            routeCardResponseDtos.add(
+                    RouteCardResponseDto.builder()
+                            .routeId((long) i)
+                            .nickname("lolo")
+                            .profileImg("")
+                            .title("title" + i)
+                            .distance(1000)
+                            .createdAt(LocalDateTime.now())
+                            .wktRunRoute("LINESTRING (29 11, 11 31, 42 41)")
+                            .build());
+        }
+        when(routeFindService.getMyRoutes(any())).thenReturn(routeCardResponseDtos);
+
+        // then
+        mockMvc.perform(get("/routes/me")
+                        .with(csrf()))
+                .andDo(print())
+                .andExpect(jsonPath("$[0].title").value(routeCardResponseDtos.get(0).getTitle()))
+                .andExpect(jsonPath("$[0].routeId").value(routeCardResponseDtos.get(0).getRouteId()))
                 .andExpect(status().isOk());
     }
 }
