@@ -39,7 +39,8 @@ jacocoTestReport {
                             "**/*Interceptor*",
                             "**/*Exception*",
                             "**/global/util/**",
-                            "**/domain/auth/**"
+                            "**/domain/auth/**",
+                            "**/domain/route/controller/RouteMatchController.class"
                     ] + Qdomains)
                 })
         )
@@ -73,7 +74,8 @@ jacocoTestCoverageVerification {
                     "**.*Interceptor*",
                     "**.*Exception*",
                     "**.global.util.*",
-                    "**.domain.auth.*"
+                    "**.domain.auth.*",
+                    "**.domain.route.controller.RouteMatchController"
             ] + Qdomains // 제외할 Qdomains 패턴 추가
         }
     }
