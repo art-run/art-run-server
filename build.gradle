@@ -74,6 +74,7 @@ jacocoTestCoverageVerification {
                     "**.*Response*",
                     "**.*Interceptor*",
                     "**.*Exception*",
+                    "**.*Impl*",
                     "**.global.util.*",
                     "**.domain.auth.*",
                     "**.domain.member.domain.Authority",
