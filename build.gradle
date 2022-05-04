@@ -40,6 +40,7 @@ jacocoTestReport {
                             "**/*Exception*",
                             "**/global/util/**",
                             "**/domain/auth/**",
+                            "**/domain/member/domain/Authority.enum",
                             "**/domain/route/controller/RouteMatchController.class"
                     ] + Qdomains)
                 })
@@ -75,6 +76,7 @@ jacocoTestCoverageVerification {
                     "**.*Exception*",
                     "**.global.util.*",
                     "**.domain.auth.*",
+                    "**.domain.member.domain.Authority",
                     "**.domain.route.controller.RouteMatchController"
             ] + Qdomains // 제외할 Qdomains 패턴 추가
         }
