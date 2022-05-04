@@ -58,9 +58,9 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle test
-      run: SPRING_PROFILES_ACTIVE=dev ./gradlew test
+      run: ./gradlew clean test
     - name: Build with Gradle
-      run: SPRING_PROFILES_ACTIVE=dev ./gradlew build
+      run: ./gradlew clean build
 
     # Setup gcloud CLI
     - uses: google-github-actions/setup-gcloud@94337306dda8180d967a56932ceb4ddcf01edae7
