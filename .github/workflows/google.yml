@@ -58,13 +58,17 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle test
       run: SPRING_PROFILES_ACTIVE=dev ./gradlew test
-    - name: Build with Gradle
-      run: SPRING_PROFILES_ACTIVE=dev ./gradlew build
+    - name: Run Test Coverage
+      run: SPRING_PROFILES_ACTIVE=dev ./gradlew jacocoTestReport
     - name: Generate JaCoCo Badge
       uses: cicirello/jacoco-badge-generator@v2
       with:
         generate-branches-badge: true
+        jacoco-csv-file: build/reports/jacoco/test/jacocoTestReport.csv
 
+    - name: Build with Gradle
+      run: SPRING_PROFILES_ACTIVE=dev ./gradlew build
+    
     # Setup gcloud CLI
     - uses: google-github-actions/setup-gcloud@94337306dda8180d967a56932ceb4ddcf01edae7
       with:
