@@ -60,6 +60,11 @@ jobs:
       run: SPRING_PROFILES_ACTIVE=dev ./gradlew test
     - name: Build with Gradle
       run: SPRING_PROFILES_ACTIVE=dev ./gradlew build
+    - name: Generate JaCoCo Badge
+      uses: cicirello/jacoco-badge-generator@v2
+    
+    with:
+        generate-branches-badge: true
 
     # Setup gcloud CLI
     - uses: google-github-actions/setup-gcloud@94337306dda8180d967a56932ceb4ddcf01edae7
