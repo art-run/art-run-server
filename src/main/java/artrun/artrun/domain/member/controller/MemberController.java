@@ -28,4 +28,11 @@ public class MemberController {
         return ResponseEntity.ok(memberService.saveMember(memberId, saveMemberRequestDto));
     }
 
+    @ApiOperation(value = "멤버 탈퇴", notes = "본인만 탈퇴 가능, 탈퇴할 멤버 아이디 넘기면 성공 여부 반환됨")
+    @DeleteMapping("/{memberId}")
+    public ResponseEntity<Void> deleteMember(@PathVariable Long memberId) {
+        memberService.deleteMember(memberId);
+        return ResponseEntity.noContent().build();
+    }
+
 }

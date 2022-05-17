@@ -30,4 +30,9 @@ public class MemberService {
         member.update(SaveMemberRequestDto.toMember(saveMemberRequestDto));
         return MemberResponseDto.of(member);
     }
+
+    public void deleteMember(Long memberId) {
+        SecurityUtil.isAuthorizedByMemberId(memberId);
+        memberRepository.deleteById(memberId);
+    }
 }
