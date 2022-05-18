@@ -34,6 +34,21 @@ class MemberControllerTest extends BaseTestController {
     MemberService memberService;
 
     @Test
+    @DisplayName("이메일 중복 확인")
+    void checkDuplicatedEmail() throws Exception {
+        // given
+        String email = "nnyy@gmail.com";
+
+        // when
+
+        // then
+        mockMvc.perform(get("/member/duplication")
+                        .param("email", email)
+                        .with(csrf()))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+    @Test
     @DisplayName("본인 멤버 정보 확인")
     void getMember() throws Exception {
         // given

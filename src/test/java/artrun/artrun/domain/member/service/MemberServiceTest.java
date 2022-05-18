@@ -1,6 +1,7 @@
 package artrun.artrun.domain.member.service;
 
 import artrun.artrun.domain.auth.SecurityUtil;
+import artrun.artrun.domain.auth.exception.AuthenticationException;
 import artrun.artrun.domain.member.domain.BodyInfo;
 import artrun.artrun.domain.member.domain.Gender;
 import artrun.artrun.domain.member.domain.Member;
@@ -71,5 +72,18 @@ class MemberServiceTest {
 
         // then
         assertThat(memberResponseDto.getNickname()).isEqualTo(saveMemberRequestDto.getNickname());
+    }
+
+    @Test
+    @DisplayName("중복 이메일 체크: 중복 발생")
+    void checkDuplicatedEmail() {
+        // given
+        String email = "nnyy@gmail.com";
+
+        // when
+        when(memberRepository.existsByEmail(any())).thenReturn(true);
+
+        // then
+        assertThrows(AuthenticationException.class, () -> memberService.checkDuplicatedEmail(email));
     }
 }
