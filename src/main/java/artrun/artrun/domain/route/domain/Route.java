@@ -3,6 +3,8 @@ package artrun.artrun.domain.route.domain;
 import artrun.artrun.domain.BaseEntity;
 import artrun.artrun.domain.member.domain.Member;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Type;
 import org.locationtech.jts.geom.Geometry;
 import org.locationtech.jts.geom.LineString;
@@ -43,6 +45,7 @@ public class Route extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "member_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Member member;
 
     public void updateAtFinish(Route route) {
