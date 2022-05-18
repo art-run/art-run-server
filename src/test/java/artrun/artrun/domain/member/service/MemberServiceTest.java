@@ -46,6 +46,32 @@ class MemberServiceTest {
     }
 
     @Test
+    @DisplayName("멤버 조회: 정상 조회")
+    void getMember() {
+        // given
+        Long memberId = 1L;
+        Member member = Member.builder()
+                .id(memberId)
+                .email("nnyy@gmail.com")
+                .password("password01")
+                .nickname("nnyy")
+                .bodyInfo(BodyInfo.builder()
+                        .gender(Gender.valueOf("MALE"))
+                        .height((short) 188)
+                        .weight((short) 77)
+                        .age((short) 20)
+                        .build())
+                .build();
+
+        // when
+        when(SecurityUtil.isAuthorizedByMemberId(any())).thenReturn(true);
+        when(memberRepository.getById(any())).thenReturn(member);
+
+        // then
+        assertThat(memberService.getMember(memberId).getNickname()).isEqualTo(MemberResponseDto.of(member).getNickname());
+    }
+
+    @Test
     @DisplayName("멤버 정보 닉네임을 수정함")
     void saveMemberNickname() {
         // given
