@@ -16,10 +16,10 @@ public class MemberController {
     private final MemberService memberService;
 
     @ApiOperation(value = "이메일 중복 확인", notes = "데이터베이스에서 이메일이 중복인지 확인")
-    @GetMapping("/duplication/")
-    public ResponseEntity<MemberResponseDto> checkDuplicatedEmail(@PathVariable String email) {
+    @GetMapping("/duplication")
+    public ResponseEntity<Void> checkDuplicatedEmail(@RequestParam String email) {
         memberService.checkDuplicatedEmail(email);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 
     @ApiOperation(value= "멤버 정보 보기", notes = "본인만 확인 가능")

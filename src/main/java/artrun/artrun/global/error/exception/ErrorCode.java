@@ -16,7 +16,7 @@ public enum ErrorCode {
     HANDLE_ACCESS_DENIED(403, "C006", "Access is Denied"),
 
     // Auth
-    EMAIL_DUPLICATION(400, "A001", "Email is Duplication"),
+    EMAIL_DUPLICATION(400, "A001", "Email is Duplicated"),
     LOGIN_INPUT_INVALID(400, "A002", "Login input is invalid"),
     UNAUTHORIZED(401, "A003", "UnAuthorized");
 
