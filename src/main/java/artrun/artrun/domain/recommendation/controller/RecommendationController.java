@@ -20,7 +20,7 @@ public class RecommendationController {
 
     private final RecommendationService recommendationService;
 
-    @ApiOperation(value = "추천 경로들 보기", notes = "희망 거리(m)와 pageable을 넘기면 추천 경로 리스트 반환, distance, pageNumber만 넘겨주면 됨.")
+    @ApiOperation(value = "추천 경로들 보기", notes = "희망 거리(m)와 pageable을 넘기면 추천 경로 리스트 반환, `distance`, `page`만 넘겨주면 됨.")
     @GetMapping("/recommendations")
     public ResponseEntity<List<RecommendationResponseDto>> getRecommendations(@RequestParam int distance, @PageableDefault(size = 5) Pageable pageable) {
         return ResponseEntity.ok(recommendationService.getRecommendationsByDistance(distance, pageable));

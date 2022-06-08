@@ -40,7 +40,7 @@ class RecommendationControllerTest extends BaseTestController {
     void getRecommendations() throws Exception {
         // given
         int distance = 3000;
-        int pageNumber = 1;
+        int page = 1;
 
         // when
         List<RecommendationResponseDto> recommendations = new ArrayList<>();
@@ -51,7 +51,7 @@ class RecommendationControllerTest extends BaseTestController {
         // then
         mockMvc.perform(get("/recommendations")
                         .param("distance", String.valueOf(distance))
-                        .param("pageNumber", String.valueOf(pageNumber))
+                        .param("page", String.valueOf(page))
                         .with(csrf()))
                 .andDo(print())
                 .andExpect(jsonPath("$[0].title").value(recommendations.get(0).getTitle()))
