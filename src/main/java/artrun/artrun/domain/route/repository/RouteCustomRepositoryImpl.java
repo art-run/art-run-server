@@ -32,6 +32,7 @@ public class RouteCustomRepositoryImpl implements RouteCustomRepository {
                 .innerJoin(route.member)
                 .where(route.isPublic.eq(true))
                 .where(ltRouteId(lastRouteId))
+                .where(route.runRoute.isNotNull())
                 .orderBy(route.id.desc())
                 .limit(DEFAULT_PAGE_SIZE)
                 .fetch();
@@ -45,6 +46,7 @@ public class RouteCustomRepositoryImpl implements RouteCustomRepository {
                 .innerJoin(route.member)
                 .where(route.member.id.eq(memberId))
                 .where(ltRouteId(lastRouteId))
+                .where(route.runRoute.isNotNull())
                 .orderBy(route.id.desc())
                 .limit(DEFAULT_PAGE_SIZE)
                 .fetch();
